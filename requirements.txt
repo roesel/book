@@ -1,0 +1,3 @@
+flask
+peewee
+sqlite_web
