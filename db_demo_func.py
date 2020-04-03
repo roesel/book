@@ -58,10 +58,11 @@ def check_bookings_count(when, room_id):
     return count_check, [room_check, floor_check, building_check]
 
 def check_create_booking(who, when, room_id):
-    check_bookability, occupation_status = check_bookings_count(when=when, room_id=room_id)
+    check_bookability, _ = check_bookings_count(when=when, room_id=room_id)
     if check_bookability == True:
-        return create_booking(who=who, when=when, room_id=room_id)
-    else occupation_status
+        return create_booking(who=who, when=when, room_id=room_id) 
+    else:
+        return False
     
 # --------- Debugging functions
 
@@ -73,5 +74,5 @@ def print_bookings():
 
 # This will only run if this .py script is directly executed
 if __name__ == '__main__':
-    a, b = check_bookings_count('2020-04-05', 1)
-    print(a, b)
+    a = check_create_booking('Maksim', '2020-04-06', 1)
+    print(a)
