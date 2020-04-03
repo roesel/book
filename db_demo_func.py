@@ -7,8 +7,8 @@ POP_LIMIT_ROOM = 1
 POP_LIMIT_FLOOR = 4
 POP_LIMIT_BUILDING = 10 
 
-def create_booking(who, when, where):
-    new_booking = Booking(who=who, where=where, when=when)
+def create_booking(who, when, room_id):
+    new_booking = Booking(who=who, when=when, room=room_id)
     new_booking.save()
     return new_booking.id
 
@@ -56,6 +56,12 @@ def check_bookings_count(when, room_id):
 
     count_check = room_check*floor_check*building_check
     return count_check, [room_check, floor_check, building_check]
+
+def check_create_booking(who, when, room_id):
+    check_bookability, _ = check_bookings_count(when=when, room_id=room_id)
+    if check_bookability == True:
+        create_booking(who=who, when=when, room_id=room_id)
+    return check_bookings_count(when=when, room_id=room_id)
     
 # --------- Debugging functions
 
