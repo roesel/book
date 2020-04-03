@@ -31,7 +31,7 @@ def check_bookings_count(when, room_name):
     if floor_count > Floor_pop_limit:
         floor_check = False    
     building_count = Booking.select().join(Room).where( (Booking.when = when) & (Room.building  == room.building) ).count()
-    if building_count > Room_pop_limit:
+    if building_count > Building_pop_limit:
         building_check = False
     count_check = room_check*floor_check*building_check
     return count_check, [room_check, floor_check, building_check]
