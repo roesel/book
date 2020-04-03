@@ -2,6 +2,11 @@ import peewee
 from models import Room, Booking
 from playhouse.shortcuts import model_to_dict
 
+# APP safety settings
+POP_LIMIT_ROOM = 1
+POP_LIMIT_FLOOR = 4
+POP_LIMIT_BUILDING = 10 
+
 def create_booking(who, when, where):
     new_booking = Booking(who=who, where=where, when=when)
     new_booking.save()
@@ -22,17 +27,33 @@ def delete_booking(id):
     num_of_deleted_rows = query.execute()
     return num_of_deleted_rows
 
-def check_bookings_count(when, room_name):
-    room_count = Booking.select().join(Room).where((Booking.when == when)& (Room.name == room_name)).count()
-    if room_count > Room_pop_limit:
-        room_check = False
-    room = Room.get(Room.name == room_name)
-    floor_count = Booking.select().join(Room).where((Booking.when = when) & (Room.floor == room.floor) & (Room.building  == room.building)).count()
-    if floor_count > Floor_pop_limit:
-        floor_check = False    
-    building_count = Booking.select().join(Room).where( (Booking.when = when) & (Room.building  == room.building) ).count()
-    if building_count > Building_pop_limit:
-        building_check = False
+def check_bookings_count(when, room_id):
+    room_count = Booking.select().join(Room).where(
+        (Booking.when == when) & 
+        (Room.id == room_id)
+    ).count()
+    room_check = False
+    if room_count < POP_LIMIT_ROOM:
+        room_check = True
+
+    room = Room.get(Room.id == room_id)
+    floor_count = Booking.select().join(Room).where(
+        (Booking.when == when) & 
+        (Room.floor == room.floor) & 
+        (Room.building  == room.building)
+    ).count()
+    floor_check = False
+    if floor_count < POP_LIMIT_FLOOR:
+        floor_check = True 
+
+    building_count = Booking.select().join(Room).where( 
+        (Booking.when == when) & 
+        (Room.building  == room.building) 
+    ).count()
+    building_check = False
+    if building_count < POP_LIMIT_BUILDING:
+        building_check = True
+
     count_check = room_check*floor_check*building_check
     return count_check, [room_check, floor_check, building_check]
     
@@ -43,3 +64,8 @@ def print_bookings():
     q = Booking.select() 
     for b in q:
         print(b.id, b.who, b.room.name)
+
+# This will only run if this .py script is directly executed
+if __name__ == '__main__':
+    a, b = check_bookings_count('2020-04-05', 1)
+    print(a, b)
