@@ -60,8 +60,8 @@ def check_bookings_count(when, room_id):
 def check_create_booking(who, when, room_id):
     check_bookability, occupation_status = check_bookings_count(when=when, room_id=room_id)
     if check_bookability == True:
-        return create_booking(who=who, when=when, room_id=room_id)
-    else occupation_status
+        return create_booking(who=who, when=when, room_id=room_id), occupation_status
+    else return check_bookability, occupation_status
     
 # --------- Debugging functions
 
