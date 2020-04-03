@@ -22,6 +22,20 @@ def delete_booking(id):
     num_of_deleted_rows = query.execute()
     return num_of_deleted_rows
 
+
+def check_bookings_count(when, room_name, floor, building):
+    room_count = Booking.select().join(Room).where((Booking.when = when)& (Room.name == room_name) & (Room.floor == floor) & (Room.building  == building)).count()
+    if room_count > Room_pop_limit:
+        room_check = False
+    floor_count = Booking.select().join(Room).where((Booking.when = when) & (Room.floor == floor) & (Room.building  == building)).count()
+    if floor_count > Floor_pop_limit:
+        floor_check = False    
+    building_count = Booking.select().join(Room).where( (Booking.when = when) & (Room.building  == building) ).count()
+    if building_count > Room_pop_limit:
+        building_check = False
+    count_check = room_check*floor_check*building_check
+    return count_check, [room_check, floor_check, building_check]
+    
 # --------- Debugging functions
 
 def print_bookings():
