@@ -152,6 +152,16 @@ def status(when):
             display: true,
             text: "'''+text_string+'''"
         }
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                }]
+            }
         }
     });
     </script>'''
