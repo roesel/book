@@ -86,6 +86,30 @@ def get_free_slots(room_id, start_date, num_days):
 
     return checks
 
+def stats_occupation(when):
+    floor_occupation = {}
+    floor_occupation_rel = {}
+    building_occupation = {}
+    building_occupation_rel = {}
+    day_occupation = Booking.select().where(Booking.when == when)
+    for booking in day_occupation:
+        room_id = booking.room
+        room = Room.get(Room.id == room_id)
+        if room.building in floor_occupation:
+            if room.floor in floor_occupation[room.building]:
+                floor_occupation[room.building][room.floor] += 1
+            else:
+                floor_occupation[room.building][room.floor] = 1
+        else:
+            floor_occupation[room.building] = {}
+            floor_occupation[room.building][room.floor] = 1
+            floor_occupation_rel[room.building]= {}
+        floor_occupation_rel[room.building][room.floor] = floor_occupation[room.building][room.floor]/POP_LIMIT_FLOOR
+    for building in floor_occupation:
+            building_occupation[building] = sum(floor_occupation[building].values())
+            building_occupation_rel[building] = building_occupation[building]/POP_LIMIT_BUILDING    
+    return building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel
+
 # def prettify_date(date):
 #     """ `date`: str of form 'XXXX-XX-XX' """
 

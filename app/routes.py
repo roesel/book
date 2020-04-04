@@ -107,11 +107,17 @@ def choose_date(room_id):
                 if c["available"]:
                     d["available"] = True
     
-
-
     return render_template('choose_date.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days)
 
 @app.route('/make-booking/<int:room_id>/<when>/', methods=['POST', 'GET'])
 def make_booking(room_id, when):
     _ = create_booking(current_user.id, when, room_id)
     return redirect(f'/dashboard/')
+
+@app.route('/status/', defaults={'when': '2020-04-05'})
+@app.route('/status/<when>/')
+def status(when):
+    bo, fo, br, fr = stats_occupation(when)
+
+    return render_template('status.html', br = br)
+
