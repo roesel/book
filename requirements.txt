@@ -1,4 +1,6 @@
 flask
+flask-login
+flask_wtf
 peewee
 sqlite_web
 python-dotenv
