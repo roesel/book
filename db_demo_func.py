@@ -101,6 +101,32 @@ def stats_occupation(when):
             building_occupation_rel[building] = building_occupation[building]/POP_LIMIT_BUILDING    
     return building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel
 
+def stats_occupation_around(when, room_id):
+    same_building_occupation = {}
+    same_building_occupation_rel = {}
+    same_floor_occupation = {}
+    same_floor_occupation_rel = {}
+    room = Room.get(Room.id == room_id)
+    same_building_occupation = Booking.select().join(Room).where(Booking.when == when, Room.building == room.building).count()
+    same_building_occupation_rel = same_building_occupation/POP_LIMIT_BUILDING
+    same_floor_occupation = Booking.select().join(Room).where(Booking.when == when, Room.building == room.building, Room.floor == room.floor).count()
+    same_floor_occupation_rel = same_floor_occupation/POP_LIMIT_FLOOR
+    return same_building_occupation, same_floor_occupation, same_building_occupation_rel, same_floor_occupation_rel
+
+def stats_for_plot_building(when):
+    building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel = stats_occupation(when = when)
+    plot_input = {}
+    plot_input['text'] = 'Load of EPFL campus per building'
+    plot_input['label'] = 'Rooms booked in this building'
+    for b in building_occupation.keys():
+        append.plot_input['labels'](b)
+        append.plot_input['data'](building_occupation[b])
+        if building_occupation_rel < 1:
+            append.plot_input['colors']('blue')
+        else:
+            append.plot_input['colors']('red')
+    return plot_input
+
 # --------- Debugging functions
 
 def print_bookings():
