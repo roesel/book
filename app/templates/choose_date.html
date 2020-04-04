@@ -15,12 +15,12 @@
             <th>Date</th>
             <th>Status</th>
         </tr>
-        {% for v in checks %}
+        {% for check in checks %}
             <tr>
-                <td>{{ v["when"] }}</td>
+                <td>{{ check['when'] }}</td>
                 <td>
-                    {% if v["available"] %}
-                        <a href="/make-booking/{{ room_id }}/{{ v['when'] }}/">Book</a>
+                    {% if check['available'] %}
+                        <a href="/make-booking/{{ room_id }}/{{ check['when'] }}/">Book</a>
                     {% else %}
                         Booked
                     {% endif %}

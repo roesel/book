@@ -8,7 +8,6 @@ import peewee
 
 # Other
 from datetime import datetime
-from datetime import timedelta
 from app.database import *
 from app.access_system import *
 from collections import OrderedDict
@@ -55,12 +54,10 @@ def logout():
 @login_required
 @app.route('/dashboard/')
 def dashboard():
-    bookings = get_bookings_of_user(current_user.id)
-    print(bookings)
-    #try:
-    #    bookings = get_bookings_of_user(current_user)
-    #except:
-    #    return "Could not retrieve your bookings"
+    try:
+       bookings = get_bookings_of_user(current_user.id)
+    except:
+       return "Could not retrieve your bookings"
     return render_template('dashboard.html', bookings=bookings, user_name=current_user.name)
 
 
@@ -98,7 +95,8 @@ def choose_date(room_id):
     #    when = now + timedelta(days=i)
     #    checks[when] = bool(check_bookings_count(when, room_id)[0])
 
-    checks = get_free_slots(room_id)
+    now = datetime.now()
+    checks = get_free_slots(room_id, now, 7)
 
     return render_template('choose_date.html', checks=checks, user_name=current_user.name, room_id=room_id)
 

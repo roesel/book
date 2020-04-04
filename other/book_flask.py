@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #! /usr/bin/env python
 
 from flask import Flask, render_template, url_for, request, redirect
@@ -77,6 +76,3 @@ def book_date(user_name, room_id, time, methods=['GET']):
 
 if __name__ == "__main__":
     app.run(debug=True)
-=======
-from app import app
->>>>>>> fed5888211d308e4bee0da4d8aa3952f8e9bb0ba

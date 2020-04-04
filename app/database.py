@@ -1,6 +1,7 @@
 import peewee
 from app.models import Room, Booking, User
 from playhouse.shortcuts import model_to_dict
+from datetime import timedelta
 
 # APP safety settings
 POP_LIMIT_ROOM = 1
@@ -68,18 +69,26 @@ def check_create_booking(who, when, room_id):
     else:
         return False
 
-def get_free_slots(room_id):
+def get_free_slots(room_id, start_date, num_days):
     ''' Returns free slots for a room during the next 7 days. 
         : list of dicts
             : each item {when:date, available:t/f, reasons:list?]
     '''
-    next_n_days = ["2020-04-{:02d}".format(x) for x in range(5, 5+7)]
-    print(next_n_days)
-    out = []
-    for day in next_n_days:
-        available, reasons = check_bookings_count(day, room_id)
-        out.append( {'when':day, 'available':bool(available), 'reasons':reasons} )
-    return out
+    checks = []
+    for i in range(num_days):
+       when = start_date + timedelta(days=i)
+       available, reasons = check_bookings_count(when.strftime("%Y-%m-%d"), room_id)
+       checks.append({
+           'when': when.strftime("%Y-%m-%d"),
+           'available': bool(available),
+           'reasons': reasons
+        })
+
+    return checks
+
+def prettify_date(date):
+    """ `date`: str of form 'XXXX-XX-XX' """
+
 
     
 # --------- Debugging functions
