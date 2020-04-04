@@ -82,19 +82,29 @@ def stats_occupation(when):
     floor_occupation_rel = {}
     building_occupation = {}
     building_occupation_rel = {}
+    buildings_of_the_campus = Room.select(Room.building).group_by(Room.building)
+    for building in buildings_of_the_campus:
+        floor_occupation[building] = 0
+        floor_occupation_rel[building] = 0
+        rooms_of_the_building = Room.select().where(Room.building == building)
+        floors_of_the_building = rooms_in_the_building.select(Room.floor).group_by(Room.floor)
+        for floor in floors_of_the_building:
+            floor_occupation[building][floor] = 0
+            floor_occupation_rel[building][floor] = 0
     day_occupation = Booking.select().where(Booking.when == when)
     for booking in day_occupation:
         room_id = booking.room
         room = Room.get(Room.id == room_id)
-        if room.building in floor_occupation:
-            if room.floor in floor_occupation[room.building]:
-                floor_occupation[room.building][room.floor] += 1
-            else:
-                floor_occupation[room.building][room.floor] = 1
-        else:
-            floor_occupation[room.building] = {}
-            floor_occupation[room.building][room.floor] = 1
-            floor_occupation_rel[room.building]= {}
+        #if room.building in floor_occupation:
+        #    if room.floor in floor_occupation[room.building]:
+        #        floor_occupation[room.building][room.floor] += 1
+        #    else:
+        #        floor_occupation[room.building][room.floor] = 1
+        #else:
+        #    floor_occupation[room.building] = {}
+        #    floor_occupation[room.building][room.floor] = 1
+        #    floor_occupation_rel[room.building]= {}
+        floor_occupation[room.building][room.floor] += 1
         floor_occupation_rel[room.building][room.floor] = floor_occupation[room.building][room.floor]/POP_LIMIT_FLOOR
     for building in floor_occupation:
             building_occupation[building] = sum(floor_occupation[building].values())
@@ -121,7 +131,7 @@ def stats_for_plot_building(when):
     for b in building_occupation.keys():
         append.plot_input['labels'](b)
         append.plot_input['data'](building_occupation[b])
-        if building_occupation_rel < 1:
+        if building_occupation_rel[b] < 1:
             append.plot_input['colors']('blue')
         else:
             append.plot_input['colors']('red')
@@ -138,5 +148,5 @@ def print_bookings():
 # This will only run if this .py script is directly executed
 if __name__ == '__main__':
     date = '2020-04-05'
-    a = stats_occupation(date)
+    a = stats_for_plot_building(date)
     print(date, a)
