@@ -104,6 +104,7 @@ def choose_date(room_id):
         for c in checks:
             if d["when"]==c["when"]:
                 d['blocked'] = False
+                d['reasons'] = c["reasons"]
                 if c["available"]:
                     d["available"] = True
     

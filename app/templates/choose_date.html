@@ -67,7 +67,15 @@
                         {% if d["available"] %}
                             <a href='/make-booking/{{ room_id }}/{{d["when"]}}/'><div class="event bg-primary">Book</div></a>
                         {% else %}
-                            <div class="event bg-danger">Full</div>
+                            {% if d["reasons"][0] %}
+                                <div class="event bg-danger">Full room</div>
+                            {% elif d["reasons"][1] %}
+                                <div class="event bg-danger">Full floor</div>
+                            {% elif d["reasons"][2] %}
+                                <div class="event bg-danger">Full building</div>
+                            {% else %}
+                                <div class="event bg-danger">Full</div>
+                            {% endif %}
                         {% endif %}
                     {% endif %}
 
