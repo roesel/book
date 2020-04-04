@@ -1,3 +1,4 @@
 flask
 peewee
 sqlite_web
+python-dotenv
