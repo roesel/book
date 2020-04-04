@@ -1,5 +1,5 @@
 import peewee
-from models import Room, Booking
+from app.models import Room, Booking
 from playhouse.shortcuts import model_to_dict
 
 # APP safety settings
@@ -78,10 +78,14 @@ def get_free_slots(room_id):
     return out
     
 def stats_occupation(when):
-    day_occupation = Booking.select().where(Booking.when = when)
+    day_occupation = Booking.select().where(Booking.when == when)
     for booking in day_occupation:
         room_id = booking.room
         room = Room.get(Room.id == room_id)
+        floor_occupation = {}
+        floor_occupation_rel = {}
+        building_occupation = {}
+        building_occupation_rel = {}
         if room.building in floor_occupation:
             if room.floor in floor_occupation[room.building]:
                 floor_occupation[room.building][room.floor] += 1
@@ -90,10 +94,12 @@ def stats_occupation(when):
         else:
             floor_occupation[room.building] = {}
             floor_occupation[room.building][room.floor] = 1
+            floor_occupation_rel[room.building]= {}
+        floor_occupation_rel[room.building][room.floor] = floor_occupation[room.building][room.floor]/POP_LIMIT_FLOOR
     for building in floor_occupation:
             building_occupation[building] = sum(floor_occupation[building].values())
-    return building_occupation, floor_occupation
-
+            building_occupation_rel[building] = building_occupation[building]/POP_LIMIT_BUILDING    
+    return building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel
 
 # --------- Debugging functions
 
@@ -105,5 +111,5 @@ def print_bookings():
 
 # This will only run if this .py script is directly executed
 if __name__ == '__main__':
-    a = check_create_booking('Maksim', '2020-04-06', 1)
+    a = stats_occupation('2020-04-06')
     print(a)
