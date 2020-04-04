@@ -1,5 +1,5 @@
 import peewee
-from models import Room, Booking
+from app.models import Room, Booking
 from playhouse.shortcuts import model_to_dict
 
 # APP safety settings
@@ -16,8 +16,8 @@ def create_booking(who, when, room_id):
     new_booking.save()
     return new_booking.id
 
-def get_bookings_of_user(user_name):
-    query = Booking.select().where(Booking.who==user_name)
+def get_bookings_of_user(user_id):
+    query = Booking.select().where(Booking.who==user_id)
     user_bookings = [model_to_dict(c) for c in query]
     return user_bookings
 

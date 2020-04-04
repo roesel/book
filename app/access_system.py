@@ -1,5 +1,5 @@
 import peewee
-from models import Room, Booking
+from app.models import Room, Booking
 from playhouse.shortcuts import model_to_dict
 
 def get_accessible_rooms(user_id):

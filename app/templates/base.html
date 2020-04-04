@@ -24,8 +24,8 @@
       <nav class="my-2 my-md-0 mr-md-3">
         <a class="p-2 text-dark" href="#">Status</a>
         {% if not current_user.is_anonymous %}
-          <a class="p-2 text-dark" href="#">My bookings</a>
-          <a class="p-2 text-dark" href="#">Make a booking</a>
+          <a class="p-2 text-dark" href="{{ url_for('dashboard') }}">My bookings</a>
+          <a class="p-2 text-dark" href="{{ url_for('book') }}">Make a booking</a>
         {% endif %}
       </nav>
 

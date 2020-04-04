@@ -33,8 +33,8 @@ class Room(BaseModel):
 
 class Booking(BaseModel):
     id = IntegerField(primary_key=True)
-    who = CharField()
     when = CharField()
+    who = ForeignKeyField(User, to_field='id', related_name="user")
     room = ForeignKeyField(Room, to_field='id', related_name="room")
 
 db.create_tables([Room, Booking, User])
