@@ -119,5 +119,41 @@ def make_booking(room_id, when):
 def status(when):
     bo, fo, br, fr = stats_occupation(when)
 
-    return render_template('status.html', br = br)
+    print(bo)
+
+    stats = stats_for_plot_building(when)
+
+    print(stats)
+
+    labels_string = '","'.join(stats["labels"])
+    colors_string = '","'.join(stats["colors"])
+    data_string = ','.join([str(x) for x in stats["data"]])
+    label_string = stats["label"]
+    text_string = stats["text"]
+
+    plot_code = '''<script>
+    // Bar chart
+    new Chart(document.getElementById("bar-chart"), {
+        type: 'bar',
+        data: {
+        labels: ["'''+labels_string+'''"],
+        datasets: [
+            {
+            label: "'''+label_string+'''",
+            backgroundColor: ["'''+colors_string+'''"],
+            data: ['''+data_string+''']
+            }
+        ]
+        },
+        options: {
+        legend: { display: false },
+        title: {
+            display: true,
+            text: "'''+text_string+'''"
+        }
+        }
+    });
+    </script>'''
+
+    return render_template('status.html', br = br, stats=stats, plot_code = plot_code)
 

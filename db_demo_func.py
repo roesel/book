@@ -84,10 +84,10 @@ def stats_occupation(when):
     building_occupation_rel = {}
     buildings_of_the_campus = Room.select(Room.building).group_by(Room.building)
     for building in buildings_of_the_campus:
-        floor_occupation[building] = 0
-        floor_occupation_rel[building] = 0
+        floor_occupation[building] = {}
+        floor_occupation_rel[building] = {}
         rooms_of_the_building = Room.select().where(Room.building == building)
-        floors_of_the_building = rooms_in_the_building.select(Room.floor).group_by(Room.floor)
+        floors_of_the_building = rooms_of_the_building.select(Room.floor).group_by(Room.floor)
         for floor in floors_of_the_building:
             floor_occupation[building][floor] = 0
             floor_occupation_rel[building][floor] = 0
@@ -147,6 +147,9 @@ def print_bookings():
 
 # This will only run if this .py script is directly executed
 if __name__ == '__main__':
-    date = '2020-04-05'
-    a = stats_for_plot_building(date)
-    print(date, a)
+    r = Room.select(Room.building).group_by(Room.building)
+    for s in r:
+        print(s.building)
+    # date = '2020-04-05'
+    # a = stats_for_plot_building(date)
+    # print(date, a)

@@ -92,24 +92,66 @@ def stats_occupation(when):
     floor_occupation_rel = {}
     building_occupation = {}
     building_occupation_rel = {}
+    rows = Room.select(Room.building).group_by(Room.building)
+    buildings_of_the_campus = [row.building for row in rows]
+    for building in buildings_of_the_campus:
+        floor_occupation[building] = {}
+        floor_occupation_rel[building] = {}
+        rooms_of_the_building = Room.select().where(Room.building == building)
+        rows = Room.select(Room.floor).where(Room.building == building).group_by(Room.floor)
+        floors_of_the_building = [row.floor for row in rows]
+        for floor in floors_of_the_building:
+            floor_occupation[building][floor] = 0
+            floor_occupation_rel[building][floor] = 0
     day_occupation = Booking.select().where(Booking.when == when)
     for booking in day_occupation:
         room_id = booking.room
         room = Room.get(Room.id == room_id)
-        if room.building in floor_occupation:
-            if room.floor in floor_occupation[room.building]:
-                floor_occupation[room.building][room.floor] += 1
-            else:
-                floor_occupation[room.building][room.floor] = 1
-        else:
-            floor_occupation[room.building] = {}
-            floor_occupation[room.building][room.floor] = 1
-            floor_occupation_rel[room.building]= {}
+        #if room.building in floor_occupation:
+        #    if room.floor in floor_occupation[room.building]:
+        #        floor_occupation[room.building][room.floor] += 1
+        #    else:
+        #        floor_occupation[room.building][room.floor] = 1
+        #else:
+        #    floor_occupation[room.building] = {}
+        #    floor_occupation[room.building][room.floor] = 1
+        #    floor_occupation_rel[room.building]= {}
+        floor_occupation[room.building][room.floor] += 1
         floor_occupation_rel[room.building][room.floor] = floor_occupation[room.building][room.floor]/POP_LIMIT_FLOOR
     for building in floor_occupation:
             building_occupation[building] = sum(floor_occupation[building].values())
             building_occupation_rel[building] = building_occupation[building]/POP_LIMIT_BUILDING    
     return building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel
+
+
+def stats_occupation_around(when, room_id):
+    same_building_occupation = {}
+    same_building_occupation_rel = {}
+    same_floor_occupation = {}
+    same_floor_occupation_rel = {}
+    room = Room.get(Room.id == room_id)
+    same_building_occupation = Booking.select().join(Room).where(Booking.when == when, Room.building == room.building).count()
+    same_building_occupation_rel = same_building_occupation/POP_LIMIT_BUILDING
+    same_floor_occupation = Booking.select().join(Room).where(Booking.when == when, Room.building == room.building, Room.floor == room.floor).count()
+    same_floor_occupation_rel = same_floor_occupation/POP_LIMIT_FLOOR
+    return same_building_occupation, same_floor_occupation, same_building_occupation_rel, same_floor_occupation_rel
+
+def stats_for_plot_building(when):
+    building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel = stats_occupation(when = when)
+    plot_input = {}
+    plot_input['labels'] = []
+    plot_input['data'] = []
+    plot_input['colors'] = []
+    plot_input['text'] = 'Load of EPFL campus per building'
+    plot_input['label'] = 'Rooms booked in this building'
+    for b in building_occupation.keys():
+        plot_input['labels'].append(b)
+        plot_input['data'].append(building_occupation[b])
+        if building_occupation_rel[b] < 1:
+            plot_input['colors'].append('blue')
+        else:
+            plot_input['colors'].append('red')
+    return plot_input
 
 
 def prettify_date(date):
