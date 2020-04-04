@@ -78,14 +78,14 @@ def get_free_slots(room_id):
     return out
     
 def stats_occupation(when):
+    floor_occupation = {}
+    floor_occupation_rel = {}
+    building_occupation = {}
+    building_occupation_rel = {}
     day_occupation = Booking.select().where(Booking.when == when)
     for booking in day_occupation:
         room_id = booking.room
         room = Room.get(Room.id == room_id)
-        floor_occupation = {}
-        floor_occupation_rel = {}
-        building_occupation = {}
-        building_occupation_rel = {}
         if room.building in floor_occupation:
             if room.floor in floor_occupation[room.building]:
                 floor_occupation[room.building][room.floor] += 1
@@ -111,5 +111,6 @@ def print_bookings():
 
 # This will only run if this .py script is directly executed
 if __name__ == '__main__':
-    a = stats_occupation('2020-04-06')
-    print(a)
+    date = '2020-04-05'
+    a = stats_occupation(date)
+    print(date, a)
