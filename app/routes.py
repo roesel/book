@@ -87,18 +87,29 @@ def book():
 
 @app.route('/choose-date/<int:room_id>/', methods=['POST', 'GET'])
 def choose_date(room_id):
-    # TODO: Merge with existing DB function - get_free_slots(room_id)
-    # TODO: Upgrade the DB function to use strftime() - get_free_slots(room_id, start_date, number of days)
-    #now = datetime.now()
-    #checks = OrderedDict()
-    #for i in range(7):
-    #    when = now + timedelta(days=i)
-    #    checks[when] = bool(check_bookings_count(when, room_id)[0])
-
     now = datetime.now()
     checks = get_free_slots(room_id, now, 7)
 
-    return render_template('choose_date.html', checks=checks, user_name=current_user.name, room_id=room_id)
+    ## Generate input data for calendar
+    # TODO: This needs to be done MUCH better
+    days = []
+    days.append({'day_number':29, 'when':'2020-03-{:02d}'.format(29), 'outside':True, 'available':False, 'blocked':True})
+    days.append({'day_number':30, 'when':'2020-03-{:02d}'.format(30), 'outside':True, 'available':False, 'blocked':True})
+    for i in range(31):
+        days.append({'day_number':i+1, 'when':'2020-04-{:02d}'.format(i+1), 'outside':False, 'available':False, 'blocked':True})
+    for j in range(2):
+        days.append({'day_number':j+1, 'when':'2020-05-{:02d}'.format(j+1), 'outside':True, 'available':False, 'blocked':True})
+    # I will go into algorithm hell for this :(
+    for d in days:
+        for c in checks:
+            if d["when"]==c["when"]:
+                d['blocked'] = False
+                if c["available"]:
+                    d["available"] = True
+    
+
+
+    return render_template('choose_date.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days)
 
 @app.route('/make-booking/<int:room_id>/<when>/', methods=['POST', 'GET'])
 def make_booking(room_id, when):
