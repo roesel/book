@@ -165,8 +165,18 @@ def status(when):
         }
     });
     </script>'''
+    
+    current_date = datetime.strptime(when, '%Y-%m-%d')
+    next_date = current_date + timedelta(days=1)
+    prev_date = current_date + timedelta(days=-1)
 
-    return render_template('status.html', br = br, stats=stats, plot_code = plot_code)
+    next_when = next_date.strftime('%Y-%m-%d')
+    prev_when = prev_date.strftime('%Y-%m-%d')
+
+    pretty_date = prettify_date(when)
+
+    return render_template('status.html', br = br, stats=stats, plot_code=plot_code, when=when, 
+                            pretty_date=pretty_date, prev_when=prev_when, next_when=next_when)
 
 
 @app.route('/team_info/')
