@@ -5,21 +5,19 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <h1 class="display-4">Status</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Status</h2>
         </div>
-        <div class="row">
-            <div class="col-sm">
-                <p>Information will be here.</p>
-            </div>
-            <div class="col-sm">
-                <canvas id="bar-chart" width="400" height="250"></canvas>
-            </div>
-        </div>
-        
-
-        
-
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <p>Information will be here.</p>
+        </div>
+        <div class="col-md-6">
+            <canvas id="bar-chart" width="400" height="250"></canvas>
+        </div>
+    </div>
+</div>
 {% endblock %}

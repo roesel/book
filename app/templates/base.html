@@ -43,16 +43,17 @@
     <div class="container">
       
       <!-- Content -->
-      <div class="card-deck mb-3 text-center">
-        {% block content %}{% endblock %}
-      </div>
+      {% block content %}{% endblock %}
+      
       
       <!-- Footer-->
       <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
-          <div class="col-12 col-md">
-            <img class="mb-2" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">
-            <small class="d-block mb-3 text-muted">&copy; 2017-2018</small>
+          <div class="col-12 col-md dark">
+            <a href="https://covid19.lauzhack.com/">
+              <img class="mb-2" src="/static/img/logo_dark.png" alt="" height="24">
+            </a>
+            <small class="d-block mb-3 text-muted">&copy; 2020 &ndash; global extinction</small>
           </div>
           <div class="col-6 col-md">
             <h5>Features</h5>
@@ -63,7 +64,7 @@
           <div class="col-6 col-md">
             <h5>Resources</h5>
             <ul class="list-unstyled text-small">
-              <li><a class="text-muted" href="#">Resource</a></li>
+              <li><a class="text-muted" href="https://github.com/roesel/book/">Source code</a></li>
             </ul>
           </div>
           <div class="col-6 col-md">
