@@ -6,8 +6,8 @@ from datetime import datetime
 
 # APP safety settings
 POP_LIMIT_ROOM = 1
-POP_LIMIT_FLOOR = 4
-POP_LIMIT_BUILDING = 10 
+POP_LIMIT_FLOOR = 3
+POP_LIMIT_BUILDING = 5 
 
 def get_all_rooms():
     rooms = Room.select() 
