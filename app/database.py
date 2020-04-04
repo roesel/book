@@ -86,8 +86,8 @@ def get_free_slots(room_id, start_date, num_days):
 
     return checks
 
-def prettify_date(date):
-    """ `date`: str of form 'XXXX-XX-XX' """
+# def prettify_date(date):
+#     """ `date`: str of form 'XXXX-XX-XX' """
 
 
     
