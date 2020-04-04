@@ -6,20 +6,23 @@
 
 {% block content %}
 <div class="content">
-    <h1 style="text-align: center">Lab Book</h1>
-    <h2 style="text-align: center">New Booking</h2>
-    <h4 style="text-align: center">Choose a room:</h4>
+    <h1>Lab Book</h1>
+    <h2>New Booking</h2>
+    <h4>Choose a room:</h4>
 
-    <div class="form">
-        <form action="/book/" method="POST">
-            <select id="rooms" name="rooms">
-                {% for room in rooms %}
-                    <option value="{{ room['id'] }}">{{ room['building'], room['floor'], room['name'] }}</option>
-                {% endfor %}
-            </select>
-            <input type="submit" value="View available dates">
-        </form>
-    </div>
     
+    
+    <div class="container">
+        <div class="form-inline">
+            <form action="/book/" method="POST">
+                <select class="custom-select" id="rooms" name="rooms">
+                    {% for room in rooms %}
+                        <option value="{{ room['id'] }}">{{ room['name'] }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" class="btn btn-light" value="View available dates">
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

@@ -79,7 +79,7 @@ def book():
         return redirect(f'/choose-date/{book_room_id}/')
     else:
         try:
-            rooms = get_all_rooms()
+            rooms = get_accessible_rooms(current_user.id)
         except:
             return "Could not retireve rooms"
         return render_template('book.html', rooms=rooms, user_name=current_user.name)
