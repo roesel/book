@@ -33,7 +33,7 @@
                                 <td>{{ prettify_date(booking['when']) }}</td>
                                 <td>{{ booking['room']['name'] }}</td>
                                 <td>
-                                    <a href="/cancel-booking/{{ booking['id'] }}/">Cancel</a>
+                                    <a class="text-danger" href="/cancel-booking/{{ booking['id'] }}/">Cancel</a>
                                 </td>
                             </tr>
                         {% endfor %}
