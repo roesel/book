@@ -2,6 +2,7 @@ import peewee
 from app.models import Room, Booking, User
 from playhouse.shortcuts import model_to_dict
 from datetime import timedelta
+from datetime import datetime
 
 # APP safety settings
 POP_LIMIT_ROOM = 1
@@ -110,8 +111,19 @@ def stats_occupation(when):
             building_occupation_rel[building] = building_occupation[building]/POP_LIMIT_BUILDING    
     return building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel
 
-# def prettify_date(date):
-#     """ `date`: str of form 'XXXX-XX-XX' """
+
+def prettify_date(date):
+    """
+    Input:
+    ------
+    `date`: str of form '%Y-%m-%d' ('2020-04-04')
+
+    Returns:
+    -------
+    str of form '%B %d, %Y' ('April 4, 2020')
+    """
+    return datetime.strptime(date, '%Y-%m-%d').strftime('%B %d, %Y')
+
 
 
     

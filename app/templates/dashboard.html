@@ -6,24 +6,30 @@
 
 {% block content %}
 <div class="content">
-    <h1 style="text-align: center">Lab Book</h1>
-    <h2 style="text-align: center">My Bookings</h2>
+    <h1>Lab Book</h1>
+    <h2>My Bookings</h2>
 
-    <table>
-        <tr>
-            <th>Booking</th>
-            <th>Actions</th>
-        </tr>
-        {% for booking in bookings %}
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>{{ booking }}</td>
-                <td>
-                    <a href="/cancel-booking/{{ booking['id'] }}/">Cancel</a>
-                </td>
+                <th>Date</th>
+                <th>Room</th>
+                <th>Actions</th>
             </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+                <tr>
+                    <td>{{ prettify_date(booking['when']) }}</td>
+                    <td>{{ booking['room']['name'] }}</td>
+                    <td>
+                        <a href="/cancel-booking/{{ booking['id'] }}/">Cancel</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 
-    <a href="/book/">New booking</a>
+    <a href="/book/" class="btn btn-light btn-block" role="button">New booking</a>
 </div>
 {% endblock %}
