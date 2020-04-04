@@ -63,6 +63,19 @@ def check_create_booking(who, when, room_id):
         return create_booking(who=who, when=when, room_id=room_id) 
     else:
         return False
+
+def get_free_slots(room_id):
+    ''' Returns free slots for a room during the next 7 days. 
+        : list of dicts
+            : each item {when:date, available:t/f, reasons:list?]
+    '''
+    next_n_days = ["2020-04-{:02d}".format(x) for x in range(5, 5+7)]
+    print(next_n_days)
+    out = []
+    for day in next_n_days:
+        available, reasons = check_bookings_count(day, room_id)
+        out.append( {'when':day, 'available':bool(available), 'reasons':reasons} )
+    return out
     
 # --------- Debugging functions
 
@@ -70,7 +83,7 @@ def print_bookings():
     ''' Prints all bookings in terminal. '''
     q = Booking.select() 
     for b in q:
-        print(b.id, b.who, b.room.name)
+        print(b.id, b.who, b.when, b.room.name)
 
 # This will only run if this .py script is directly executed
 if __name__ == '__main__':
