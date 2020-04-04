@@ -7,6 +7,10 @@ POP_LIMIT_ROOM = 1
 POP_LIMIT_FLOOR = 4
 POP_LIMIT_BUILDING = 10 
 
+def get_all_rooms():
+    rooms = Room.select() 
+    return rooms
+
 def create_booking(who, when, room_id):
     new_booking = Booking(who=who, when=when, room=room_id)
     new_booking.save()

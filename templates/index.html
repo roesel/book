@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Lab Book</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center">Lab Book</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+        Vivamus eu orci id felis feugiat pulvinar at id libero. 
+        Ut ut cursus neque, non faucibus diam. Proin id tortor sit amet augue pulvinar feugiat. 
+        Sed viverra vestibulum ornare. Nunc vulputate vel libero vel cursus. 
+        In orci ex, maximus at nisi vel, cursus malesuada purus.
+    </p>
+    <p>
+        Sed elementum felis at interdum molestie. Nulla facilisi. 
+        In mauris odio, venenatis a risus id, rutrum mollis nunc. 
+        Morbi nec turpis in odio faucibus congue sed at neque. Mauris 
+        sit amet felis nec augue laoreet viverra eget in sapien. 
+        Sed lobortis bibendum mollis. Fusce varius volutpat varius.
+    </p>
+
+    <h4>Enter your name:</h4>
+    <div class="form">
+        <form action="/" method="POST">
+            <input type="text" name="name" id="name">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</div>
+{% endblock %}
