@@ -158,3 +158,9 @@ def status(when):
 
     return render_template('status.html', br = br, stats=stats, plot_code = plot_code)
 
+
+@app.route('/team_info/')
+def team_info():
+ 
+    return render_template('team_info.html')
+

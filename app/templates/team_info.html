@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container">
+    <div class="column">
+      <div class="card">
+        <img src="{{ url_for('static', filename='img1.jpg') }}" alt="Jane" style="width:100%">
+        <div class="container">
+          <h2>David Roesel</h2>
+          
+          <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+          <p>example@example.com</p>
+          <p><button class="button">Contact</button></p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="column">
+      <div class="card">
+        <img src="{{ url_for('static', filename='img2.jpg') }}" alt="Mike" style="width:100%">
+        <div class="container">
+          <h2>Sergey Kulik</h2>
+          
+          <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+          <p>example@example.com</p>
+          <p><button class="button">Contact</button></p>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="column">
+      <div class="card">
+        <img src="{{ url_for('static', filename='img3.jpg') }}" alt="John" style="width:100%">
+        <div class="container">
+          <h2>Olesia Altunina</h2>
+          
+          <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+          <p>example@example.com</p>
+          <p><button class="button">Contact</button></p>
+        </div>
+      </div>
+    </div>
+
+
+  <div class="column">
+    <div class="card">
+      <img src="{{ url_for('static', filename='img4.jpg') }}" alt="John" style="width:100%">
+      <div class="container">
+        <h2>Maksim Starlord</h2>
+        
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>example@example.com</p>
+        <p><button class="button">Contact</button></p>
+      </div>
+    </div>
+  </div>
+</div>
+  {% endblock %}
