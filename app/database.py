@@ -80,6 +80,24 @@ def get_free_slots(room_id):
         available, reasons = check_bookings_count(day, room_id)
         out.append( {'when':day, 'available':bool(available), 'reasons':reasons} )
     return out
+
+def stats_occupation(when):
+    day_occupation = Booking.select().where(Booking.when = when)
+    for booking in day_occupation:
+        room_id = booking.room
+        room = Room.get(Room.id == room_id)
+        if room.building in floor_occupation:
+            if room.floor in floor_occupation[room.building]:
+                floor_occupation[room.building][room.floor] += 1
+            else:
+                floor_occupation[room.building][room.floor] = 1
+        else:
+            floor_occupation[room.building] = {}
+            floor_occupation[room.building][room.floor] = 1
+    for building in floor_occupation:
+            building_occupation[building] = sum(floor_occupation[building].values())
+    return building_occupation, floor_occupation
+
     
 # --------- Debugging functions
 
