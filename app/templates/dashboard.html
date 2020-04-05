@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-<title>Lab Book - My Bookings</title>
+<title>LabBook - My Bookings</title>
 {% endblock %}
 
 {% block content %}
@@ -73,9 +73,15 @@
                                 </td>
                                 <td> 
                                     <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 25%;" 
-                                             aria-valuenow="{{booking['floor_load_relative']}}" aria-valuemin="0" aria-valuemax="100">
-                                                {{booking['floor_load_absolute']}}
+                                        {% if booking['value_rel'] == 100 %}
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: {{booking['value_rel']}}%;" 
+                                             aria-valuenow="{{booking['value_rel']}}" aria-valuemin="0" aria-valuemax="100">
+                                        {% else %}
+                                            <div class="progress-bar" role="progressbar" style="width: {{booking['value_rel']}}%;" 
+                                            aria-valuenow="{{booking['value_rel']}}" aria-valuemin="0" aria-valuemax="100">
+                                        {% endif %}
+
+                                        {{booking['value_abs']}}
                                             </div>
                                       </div>
 

@@ -38,16 +38,22 @@ def deny_booking(booking_id):
     requested_booking.save()
     return True
 
+
 def get_bookings_of_user(user_id):
     query = Booking.select().where(Booking.who == user_id)
     user_bookings = [model_to_dict(c) for c in query]
     for b in user_bookings:
-        booking = Booking.get(b['id'])
-        room = Room.get(booking.room)
+        booking = Booking.get(Booking.id == b['id'])
+        room = Room.get(Room.id == booking.room)
         same_floor_occupation = Booking.select().join(Room).where(Booking.when == booking.when, Room.building == room.building, Room.floor == room.floor).count()
-        same_floor_occupation_rel = same_floor_occupation/POP_LIMIT_FLOOR
+        same_floor_occupation_rel = same_floor_occupation/POP_LIMIT_FLOOR*100
         b['value_abs'] = same_floor_occupation
         b['value_rel'] = same_floor_occupation_rel
+    return user_bookings
+
+def get_bookings_of_user_old(user_id):
+    query = Booking.select().where(Booking.who == user_id)
+    user_bookings = [model_to_dict(c) for c in query]
     return user_bookings
 
 def get_bookings_of_room(room_name):
@@ -55,14 +61,28 @@ def get_bookings_of_room(room_name):
     room_bookings = [model_to_dict(c) for c in query]
     return room_bookings
 
-def get_pending_bookings(sort_by='booking_id'):
+def get_pending_bookings_new(sort_by='booking_id'):
     query = Booking.select().where(Booking.status == 'pending')
-    
     if sort_by == 'when':
         query_sorted = query.order_by(Booking.when)
     else:
         query_sorted = query
-    
+    pending_bookings = [model_to_dict(c) for c in query_sorted]
+    for b in pending_bookings:
+        booking = Booking.get(Booking.id == b['id'])
+        same_room_pending = Booking.select().join(Room).where(Booking.when == booking.when, Room.id == booking.room).count()
+        if same_room_pending == 1:
+            b['unique_request'] = True
+        else:
+            b['unique_request'] = False
+    return pending_bookings
+
+def get_pending_bookings(sort_by='booking_id'):
+    query = Booking.select().where(Booking.status == 'pending')
+    if sort_by == 'when':
+        query_sorted = query.order_by(Booking.when)
+    else:
+        query_sorted = query
     pending_bookings = [model_to_dict(c) for c in query_sorted]
     return pending_bookings
 
@@ -290,11 +310,11 @@ def stats_for_plot_buildings(when_day):
         plot_input['data_AM'].append(building_occupation_AM[b])
         plot_input['data_PM'].append(building_occupation_PM[b])
         if building_occupation_rel_AM[b] < 1:
-            plot_input['colors_AM'].append('#007bff')
+            plot_input['colors_AM'].append('#3395ff')
         else:
             plot_input['colors_AM'].append('#dc3545')
         if building_occupation_rel_PM[b] < 1:
-            plot_input['colors_PM'].append('#007bff')
+            plot_input['colors_PM'].append('#0062cc')
         else:
             plot_input['colors_PM'].append('#dc3545')
     return plot_input
@@ -319,13 +339,13 @@ def stats_for_plot_time(building, month):
         print(building_occupation_AM.keys())
         plot_input['data_AM'].append(building_occupation_AM[building])
         if building_occupation_rel_AM[building] < 1:
-            plot_input['colors_AM'].append('#007bff')
+            plot_input['colors_AM'].append('#3395ff')
         else:
             plot_input['colors_AM'].append('#dc3545')
         building_occupation_PM, floor_occupation_PM, building_occupation_rel_PM, floor_occupation_rel_PM = stats_occupation(when = day_string + '-PM')
         plot_input['data_PM'].append(building_occupation_PM[building])
         if building_occupation_rel_PM[building] < 1:
-            plot_input['colors_PM'].append('#007bff')
+            plot_input['colors_PM'].append('#0062cc')
         else:
             plot_input['colors_PM'].append('#dc3545')
     return plot_input
