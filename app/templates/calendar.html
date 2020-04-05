@@ -30,25 +30,29 @@
 
                     {% for i in range(2) %}    
 
-                        {% if d["available"][i] == 2 %}
+                        {% if d["code"][i] == 2 %}
                             <a href='/make-booking/{{ room_id }}/{{d["when"]}}/'><div class="event bg-success">Book</div></a>
                             
-                        {% elif d["available"][i] == 1 %}
+                        {% elif d["code"][i] == 1 %}
                             <a href='/make-booking/{{ room_id }}/{{d["when"]}}/'><div class="event bg-warning">Book</div></a>
                            
-                        {% elif d["available"][i] == 0 %}  
+                        {% elif d["code"][i] == 0 %}  
                             {% if not d["reasons"][0] %}
-                                <div class="event bg-danger">Full room</div>
+                                <p class=" text-danger">Full room</p>  
                             {% elif not d["reasons"][1] %}
-                                <div class="event bg-danger">Full floor</div>
+                                <p class="event text-danger font-weight-bold">Full floor</p>    
                             {% elif not d["reasons"][2] %}
-                                <div class="event bg-danger">Full building</div>
+                                <p class="event text-danger font-weight-bold">Full building</p>     
                             {% else %}
                                 <div class="event bg-danger">Full</div>
                             {% endif %}
-                        
+
+                        {% elif d["code"][i] == -1 %}
+                            <p class="event bg-success">Approved</p>  
+                        {% elif d["code"][i] == -2 %}
+                            <p class="event bg-primary">Pending</p>  
                         {% else %}
-                            <div class="event bg-primary">My Booking</div></a>
+                            <p class="event bg-secondary">Not defined</p>
                         {% endif %}
                         
                     {% endfor %}
