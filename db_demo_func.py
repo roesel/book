@@ -165,9 +165,4 @@ def print_bookings():
 
 # This will only run if this .py script is directly executed
 if __name__ == '__main__':
-    r = Room.select(Room.building).group_by(Room.building)
-    for s in r:
-        print(s.building)
-    # date = '2020-04-05'
-    # a = stats_for_plot_building(date)
-    # print(date, a)
+    stats_for_plot_time('BM', 4)
