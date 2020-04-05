@@ -64,10 +64,11 @@ def dashboard():
 @login_required
 @app.route('/manage/')
 def manage():
-    try:
-       bookings = get_bookings_of_user(current_user.id)
-    except:
-       return "Could not retrieve your bookings"
+    bookings = get_pending_bookings()
+    #try:
+    #   bookings = get_pending_bookings(current_user.id)
+    #except:
+    #   return "Could not retrieve your bookings"
     
     # for b in bookings:
         # b["user"] = 'Honeybadger'
