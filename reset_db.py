@@ -1,5 +1,16 @@
+
 import peewee
+
+import sys
+import os
+if os.path.exists("book.db"):
+  os.remove("book.db")
+else:
+  print("The file does not exist") 
+  sys.exit()
+
 from app.models import User, Room, Booking
+
 
 # Make users
 users = [
@@ -155,15 +166,15 @@ for ri in rooms:
 # Make demo bookings
 
 bookings = [
-    {"when":"2020-04-05", "who":1, "room":4},
-    {"when":"2020-04-07", "who":1, "room":4},
-    {"when":"2020-04-05", "who":2, "room":7},
-    {"when":"2020-04-05", "who":1, "room":3},
-    {"when":"2020-04-06", "who":3, "room":4},
-    {"when":"2020-04-05", "who":4, "room":7},
-    {"when":"2020-04-05", "who":4, "room":2},
+    {"when":"2020-04-05", "who":1, "room":4, "status":"pending"},
+    {"when":"2020-04-07", "who":1, "room":4, "status":"confirmed"},
+    {"when":"2020-04-05", "who":2, "room":7, "status":"declined"},
+    {"when":"2020-04-05", "who":1, "room":3, "status":"confirmed"},
+    {"when":"2020-04-06", "who":3, "room":4, "status":"declined"},
+    {"when":"2020-04-05", "who":4, "room":7, "status":"pending"},
+    {"when":"2020-04-05", "who":4, "room":2, "status":"pending"},
 ]
 
 for bk in bookings:
-    b = Booking(when=bk["when"], who=bk["who"], room=bk["room"])
+    b = Booking(when=bk["when"], who=bk["who"], room=bk["room"], status=bk["status"])
     b.save()
