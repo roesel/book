@@ -7,7 +7,7 @@ from datetime import datetime
 # APP safety settings
 POP_LIMIT_ROOM = 1
 POP_LIMIT_FLOOR = 3
-POP_LIMIT_BUILDING = 5 
+POP_LIMIT_BUILDING = 5
 
 def get_all_rooms():
     rooms = Room.select() 
@@ -112,17 +112,20 @@ def get_floor_count(when, room_id, status='approved'):
 
 def check_bookings_of_user_room_when(user_id, room_id, when, status='approved'):
     assert status in ['approved', 'pending', 'denied']
-    print(when)
-    print(status)
+    # print(when)
+    # print(status)
+    # print('user_id', user_id)
+    # print('room_id', room_id)
     query = Booking.select().join(Room).where(
         (Booking.who == user_id) &
         (Room.id == room_id) &
         (Booking.when == when) &
         (Booking.status == status))
     count = query.count()
-    if count > 0:
-        print('peow')
-        print(query[0].status)
+    # print(count)
+    # if count > 0:
+    #     print('peow')
+    #     print(query[0].status)
     assert count in [0, 1]
     return bool(count)
 
@@ -177,7 +180,6 @@ def get_free_slots_for_user(user_id, room_id, start_date, num_days):
             elif pending[k]:
                 code[k] = -2
             elif available[k]:
-                print(floor_count[k])
                 code[k] = floor_count[k]
             elif not available[k]:
                 code[k] = 0

@@ -5,7 +5,7 @@
         <h2 class="month font-weight-bold mb-0 text-uppercase">December 2019</h2>
         </div>-->
         <!--<p class="font-italic text-muted mb-5">No events for this day.</p>-->
-        <h3 class="font-weight-bold mb-3 text-uppercase">April 2020</h2>
+        <h2 class="font-weight-bold mb-3 text-uppercase">{{ title }}</h2>
 
         <ol class="day-names list-unstyled">
             <li class="font-weight-bold text-uppercase text-center">Mon</li>
@@ -36,13 +36,14 @@
                         {% elif d["code"][i] == 1 %}
                             <a href='/make-booking/{{ room_id }}/{{d["when"][i]}}/'><div class="event bg-warning">Book</div></a>
                            
-                        {% elif d["code"][i] == 0 %}  
-                            {% if not d["reasons"][0] %}
-                                <p class=" text-danger">Full room</p>  
-                            {% elif not d["reasons"][1] %}
+                        {% elif d["code"][i] == 0 %}
+                            <!-- <p class="event text-danger font-weight-bold">{{ d["reasons"] }}</p> -->
+                            {% if not d["reasons"][i][2] %}
+                                <p class="event text-danger font-weight-bold">Full building</p>
+                            {% elif not d["reasons"][i][1] %}
                                 <p class="event text-danger font-weight-bold">Full floor</p>    
-                            {% elif not d["reasons"][2] %}
-                                <p class="event text-danger font-weight-bold">Full building</p>     
+                            {% elif not d["reasons"][i][0] %}
+                                <p class="event text-danger font-weight-bold">Full room</p>       
                             {% else %}
                                 <div class="event text-danger">Full</div>
                             {% endif %}

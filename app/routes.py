@@ -54,10 +54,10 @@ def logout():
 @login_required
 @app.route('/dashboard/')
 def dashboard():
-    try:
-       bookings = get_bookings_of_user(current_user.id)
-    except:
-       return "Could not retrieve your bookings"
+    # try:
+    bookings = get_bookings_of_user(current_user.id)
+    # except:
+    #    return "Could not retrieve your bookings"
     return render_template('dashboard.html', bookings=bookings, user_name=current_user.name, prettify_when=prettify_when)
 
 
@@ -138,7 +138,9 @@ def checks_to_calendar_days(checks):
         })
         pick_checks = False
 
-    return days
+    title = ' '.join([now.strftime("%B"), str(now.year)])
+
+    return days, title
 
     # Dummy
     # days = [
@@ -197,9 +199,9 @@ def choose_date(room_id):
     checks = get_free_slots_for_user(current_user.id, room_id, now, 7)
 
     ## Generate input data for calendar
-    days = checks_to_calendar_days(checks)
+    days, title = checks_to_calendar_days(checks)
     
-    return render_template('choose_date.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days)
+    return render_template('choose_date.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days, title=title)
 
 from pprint import pprint
 
@@ -207,13 +209,23 @@ from pprint import pprint
 def calendar(room_id):
     now = datetime.now()
     checks = get_free_slots_for_user(current_user.id, room_id, now, 7)
-    for check in checks:
-        pprint(checks)
-    days = checks_to_calendar_days(checks)
-    # for day in days:
-    #     print(day)
 
-    return render_template('calendar.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days)
+    # for check in checks:
+    #     if check['code'][0] > 0:
+    #         if False in check['reasons'][0]:
+    #             print(check['code'][0], check['reasons'][0])
+    #             print('\n')
+    #     if check['code'][0] == 0:
+    #         if check['reasons'][0] == [True] * 3:
+    #             print(check['code'][0], check['reasons'][0])
+    #             print('\n')
+    # print('Passed test!')
+
+    days, title = checks_to_calendar_days(checks)
+    for day in days:
+        print(day)
+
+    return render_template('calendar.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days, title=title)
 
 @app.route('/make-booking/<int:room_id>/<when>/', methods=['POST', 'GET'])
 def make_booking(room_id, when):
