@@ -114,7 +114,7 @@ def check_bookings_of_user_room_when(user_id, room_id, when, status='approved'):
     assert status in ['approved', 'pending', 'denied']
     count = Booking.select().join(Room).where(
         (Booking.who == user_id) &
-        (Room.id = room_id) &
+        (Room.id == room_id) &
         (Booking.when == when) &
         (Booking.status == status)).count()
     assert count in [0, 1]

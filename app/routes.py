@@ -132,7 +132,7 @@ def checks_to_calendar_days(checks):
             'day_number': day.day,
             'when': day.strftime('%Y-%m-%d'),
             'outside': True if day.month != now.month else False,
-            'available': checks[i]['code'] if i > -1 else None,
+            'code': checks[i]['code'] if i > -1 else None,
             'reasons': checks[i]['reasons'] if i > -1 else None,
             'blocked': True if day.month != now.month else False
         })
