@@ -39,7 +39,7 @@ def get_bookings_of_user(user_id):
         booking = Booking.get(Booking.id == b['id'])
         room = Room.get(Room.id == booking.room)
         same_floor_occupation = Booking.select().join(Room).where(Booking.when == booking.when, Room.building == room.building, Room.floor == room.floor).count()
-        same_floor_occupation_rel = same_floor_occupation/POP_LIMIT_FLOOR
+        same_floor_occupation_rel = same_floor_occupation/POP_LIMIT_FLOOR*100
         b['value_abs'] = same_floor_occupation
         b['value_rel'] = same_floor_occupation_rel
     return user_bookings
