@@ -58,7 +58,7 @@ def dashboard():
        bookings = get_bookings_of_user(current_user.id)
     except:
        return "Could not retrieve your bookings"
-    return render_template('dashboard.html', bookings=bookings, user_name=current_user.name)
+    return render_template('dashboard.html', bookings=bookings, user_name=current_user.name, prettify_when=prettify_when)
 
 
 @login_required
@@ -72,7 +72,7 @@ def manage():
     
     # for b in bookings:
         # b["user"] = 'Honeybadger'
-    return render_template('manage.html', bookings=bookings, user_name=current_user.name)
+    return render_template('manage.html', bookings=bookings, user_name=current_user.name, prettify_when=prettify_when)
 
 @app.route('/deny-booking/<int:id>/')
 def deny_booking_id(id):

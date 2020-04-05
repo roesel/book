@@ -283,7 +283,9 @@ def prettify_date(date):
     """
     return datetime.strptime(date, '%Y-%m-%d').strftime('%B %d, %Y')
 
-
+def prettify_when(when):
+    date = '-'.join(when.split('-')[0:3])
+    return prettify_date(date)+" "+when.split('-')[-1]
 
     
 # --------- Debugging functions
