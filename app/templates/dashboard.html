@@ -19,12 +19,18 @@
             {% if not bookings %}
                 <p>You have no confirmed bookings.</p>
             {% else %}
+
+            <ol class="days list-unstyled  text-center">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Date</th>
                             <th>Room</th>
+                            <th>Status</th>
+                            <th>Floor load</th>
                             <th>Actions</th>
+                            
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -32,14 +38,28 @@
                             <tr>
                                 <td>{{ prettify_date(booking['when']) }}</td>
                                 <td>{{ booking['room']['name'] }}</td>
+                                
+                               
                                 <td>
-                                    <a class="text-danger" href="/cancel-booking/{{ booking['id'] }}/">Cancel</a>
+                                    {% if booking['status'] == 'approved'%}
+                                        
+                                        <p class=" text-success">Approved</p>
+                                    {% elif booking['status'] == 'denied' %}
+                                         <p class=" text-danger">Denied</p>
+                                    {% else %}
+                                        <p class=" text-primary">Pending</p>    
+                                    {% endif %}
+                                </td>
+                                <td> </td>
+                                <td>
+                                    <a type="button" class="btn btn-danger btn-sm" href="/cancel-booking/{{ booking['id'] }}/">Delete</a>
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             {% endif %}
+            </ol>
             <a href="/book/" class="btn btn-primary btn-block" role="button">New booking</a>
         </div>
     </div>

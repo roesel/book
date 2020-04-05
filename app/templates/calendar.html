@@ -27,24 +27,31 @@
                 
                 <div class="date">{{d["day_number"]}}</div>
                 {% if not d["blocked"] %}
-                    {% if d["available"] == 2 %}
-                        <a href='/make-booking/{{ room_id }}/{{d["when"]}}/'><div class="event bg-success">Book</div></a>
-                    {% elif d["available"] == 1 %}
-                        <a href='/make-booking/{{ room_id }}/{{d["when"]}}/'><div class="event bg-warning">Book</div></a>
-                    {% elif d["available"] == 0 %}  
-                        {% if not d["reasons"][0] %}
-                            <div class="event bg-danger">Full room</div>
-                        {% elif not d["reasons"][1] %}
-                            <div class="event bg-danger">Full floor</div>
-                        {% elif not d["reasons"][2] %}
-                            <div class="event bg-danger">Full building</div>
+
+                    {% for i in range(2) %}    
+
+                        {% if d["available"][i] == 2 %}
+                            <a href='/make-booking/{{ room_id }}/{{d["when"]}}/'><div class="event bg-success">Book</div></a>
+                            
+                        {% elif d["available"][i] == 1 %}
+                            <a href='/make-booking/{{ room_id }}/{{d["when"]}}/'><div class="event bg-warning">Book</div></a>
+                           
+                        {% elif d["available"][i] == 0 %}  
+                            {% if not d["reasons"][0] %}
+                                <div class="event bg-danger">Full room</div>
+                            {% elif not d["reasons"][1] %}
+                                <div class="event bg-danger">Full floor</div>
+                            {% elif not d["reasons"][2] %}
+                                <div class="event bg-danger">Full building</div>
+                            {% else %}
+                                <div class="event bg-danger">Full</div>
+                            {% endif %}
+                        
                         {% else %}
-                            <div class="event bg-danger">Full</div>
+                            <div class="event bg-primary">My Booking</div></a>
                         {% endif %}
-                    
-                    {% else %}
-                        <div class="event bg-primary">Selected</div></a>
-                    {% endif %}
+                        
+                    {% endfor %}
                 {% endif %}
 
 

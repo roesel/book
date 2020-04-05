@@ -20,13 +20,15 @@ def create_booking(who, when, room_id):
     return new_booking.id
 
 def approve_booking(booking_id):
-    requested_booking = Booking.get(booking_id=booking_id)
+    requested_booking = Booking.get(id=booking_id)
     requested_booking.status = 'approved'
+    requested_booking.save()
     return True
 
 def deny_booking(booking_id):
-    requested_booking = Booking.get(booking_id=booking_id)
+    requested_booking = Booking.get(id=booking_id)
     requested_booking.status = 'denied'
+    requested_booking.save()
     return True
 
 def get_bookings_of_user(user_id):
@@ -181,6 +183,10 @@ def get_free_slots_for_user(user_id, room_id, start_date, num_days):
 
     return checks
 
+def get_limits():
+    limits = {'building':POP_LIMIT_BUILDING, 'floor':POP_LIMIT_FLOOR, 'room':POP_LIMIT_ROOM}
+    return limits
+
 def stats_occupation(when):
     floor_occupation = {}
     floor_occupation_rel = {}
@@ -236,6 +242,34 @@ def stats_for_plot_building(when):
             plot_input['colors'].append('#007bff')
         else:
             plot_input['colors'].append('#dc3545')
+    return plot_input
+
+def stats_for_plot_buildings(when_day):
+    plot_input = {}
+    plot_input['labels_AM'] = []
+    plot_input['data_AM'] = []
+    plot_input['colors_AM'] = []
+    plot_input['labels_PM'] = []
+    plot_input['data_PM'] = []
+    plot_input['colors_PM'] = []
+    plot_input['text'] = 'Load of EPFL campus per building'
+    plot_input['label'] = 'Rooms booked in this building'
+    building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel = stats_occupation(when = when_day + '_AM')
+    for b in building_occupation.keys():
+        plot_input['labels_AM'].append(b)
+        plot_input['data_AM'].append(building_occupation[b])
+        if building_occupation_rel[b] < 1:
+            plot_input['colors_AM'].append('#007bff')
+        else:
+            plot_input['colors_AM'].append('#dc3545')
+        building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel = stats_occupation(when = when_day + '_PM')
+    for b in building_occupation.keys():
+        plot_input['labels_PM'].append(b)
+        plot_input['data_PM'].append(building_occupation[b])
+        if building_occupation_rel[b] < 1:
+            plot_input['colors_PM'].append('#007bff')
+        else:
+            plot_input['colors_PM'].append('#dc3545')
     return plot_input
 
 
