@@ -34,6 +34,7 @@ class Room(BaseModel):
 class Booking(BaseModel):
     id = IntegerField(primary_key=True)
     when = CharField()
+    status = CharField()
     who = ForeignKeyField(User, to_field='id', related_name="user")
     room = ForeignKeyField(Room, to_field='id', related_name="room")
 

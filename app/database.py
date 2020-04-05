@@ -14,7 +14,8 @@ def get_all_rooms():
     return rooms
 
 def create_booking(who, when, room_id):
-    new_booking = Booking(who=who, when=when, room=room_id)
+    new_booking = Booking(who=who, when=when, room=room_id, status="pending")
+    # new_booking = Booking(who=who, when=when, room=room_id)
     new_booking.save()
     return new_booking.id
 
