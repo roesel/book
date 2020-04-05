@@ -264,6 +264,7 @@ def stats_for_plot_buildings(when_day):
     plot_input['data_PM'] = []
     plot_input['colors_PM'] = []
     plot_input['text'] = 'Load of EPFL campus per building'
+    plot_input['under_text'] = 'Building'
     plot_input['label_AM'] = 'Before lunch, AM'
     plot_input['label_PM'] = 'After lunch, PM'
     building_occupation_AM, floor_occupation_AM, building_occupation_rel_AM, floor_occupation_rel_AM = stats_occupation(when = when_day + '-AM')
@@ -292,6 +293,7 @@ def stats_for_plot_time(building, month):
     plot_input['colors_PM'] = []
     plot_input['label_PM'] = 'After lunch, PM'
     plot_input['text'] = 'Load of EPFL campus per building'
+    plot_input['under_text'] = 'Date'
     plot_input['label'] = 'Rooms booked in this building'
     for day in range(31):
         day_string = '2020-{:02d}-{:02d}'.format(month,day+1)
@@ -301,15 +303,15 @@ def stats_for_plot_time(building, month):
         print(building_occupation_AM.keys())
         plot_input['data_AM'].append(building_occupation_AM[building])
         if building_occupation_rel_AM[building] < 1:
-            plot_input['colors_AM'].append('007bff')
+            plot_input['colors_AM'].append('#007bff')
         else:
-            plot_input['colors_AM'].append('dc3545')
+            plot_input['colors_AM'].append('#dc3545')
         building_occupation_PM, floor_occupation_PM, building_occupation_rel_PM, floor_occupation_rel_PM = stats_occupation(when = day_string + '-PM')
         plot_input['data_PM'].append(building_occupation_PM[building])
         if building_occupation_rel_PM[building] < 1:
-            plot_input['colors_PM'].append('007bff')
+            plot_input['colors_PM'].append('#007bff')
         else:
-            plot_input['colors_PM'].append('dc3545')
+            plot_input['colors_PM'].append('#dc3545')
     return plot_input
 
 def prettify_date(date):
