@@ -47,13 +47,6 @@ def get_bookings_of_user(user_id):
 def get_bookings_of_user_old(user_id):
     query = Booking.select().where(Booking.who == user_id)
     user_bookings = [model_to_dict(c) for c in query]
-    for b in user_bookings:
-        booking = Booking.get(b['id'])
-        room = Room.get(booking.room)
-        same_floor_occupation = Booking.select().join(Room).where(Booking.when == booking.when, Room.building == room.building, Room.floor == room.floor).count()
-        same_floor_occupation_rel = same_floor_occupation/POP_LIMIT_FLOOR
-        b['value_abs'] = same_floor_occupation
-        b['value_rel'] = same_floor_occupation_rel
     return user_bookings
 
 def get_bookings_of_room(room_name):
@@ -61,14 +54,28 @@ def get_bookings_of_room(room_name):
     room_bookings = [model_to_dict(c) for c in query]
     return room_bookings
 
-def get_pending_bookings(sort_by='booking_id'):
+def get_pending_bookings_new(sort_by='booking_id'):
     query = Booking.select().where(Booking.status == 'pending')
-    
     if sort_by == 'when':
         query_sorted = query.order_by(Booking.when)
     else:
         query_sorted = query
-    
+    pending_bookings = [model_to_dict(c) for c in query_sorted]
+    for b in pending_bookings:
+        booking = Booking.get(Booking.id == b['id'])
+        same_room_pending = Booking.select().join(Room).where(Booking.when == booking.when, Room.id == booking.room).count()
+        if same_room_pending == 1:
+            b['unique_request'] = True
+        else:
+            b['unique_request'] = False
+    return pending_bookings
+
+def get_pending_bookings(sort_by='booking_id'):
+    query = Booking.select().where(Booking.status == 'pending')
+    if sort_by == 'when':
+        query_sorted = query.order_by(Booking.when)
+    else:
+        query_sorted = query
     pending_bookings = [model_to_dict(c) for c in query_sorted]
     return pending_bookings
 
