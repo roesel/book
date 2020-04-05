@@ -118,7 +118,7 @@ def checks_to_calendar_days(checks):
             'day_number': i,
             'when': '2020-03-{:02d}'.format(i),
             'outside': False,
-            'available': randint(-1, 2) for i in range(2),
+            'available': [randint(-1, 2) for i in range(2)],
             'blocked': False,
             'reasons': [[bool(randint(0, 1)) for i in range(3)] for k in range(2)]
         }
