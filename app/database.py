@@ -173,6 +173,31 @@ def stats_for_plot_building(when):
             plot_input['colors'].append('#dc3545')
     return plot_input
 
+def stats_for_plot_buildings(when_day):
+    plot_input = {}
+    plot_input['labels'] = []
+    plot_input['data'] = []
+    plot_input['colors'] = []
+    plot_input['text'] = 'Load of EPFL campus per building'
+    plot_input['label'] = 'Rooms booked in this building'
+    building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel = stats_occupation(when = when_day + '_AM')
+    for b in building_occupation.keys():
+        plot_input['labels'].append(b)
+        plot_input['data'].append(building_occupation[b])
+        if building_occupation_rel[b] < 1:
+            plot_input['colors'].append('#007bff')
+        else:
+            plot_input['colors'].append('#dc3545')
+        building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel = stats_occupation(when = when_day + '_PM')
+    for b in building_occupation.keys():
+        plot_input['labels'].append(b)
+        plot_input['data'].append(building_occupation[b])
+        if building_occupation_rel[b] < 1:
+            plot_input['colors'].append('#007bff')
+        else:
+            plot_input['colors'].append('#dc3545')
+    return plot_input
+
 
 def prettify_date(date):
     """
