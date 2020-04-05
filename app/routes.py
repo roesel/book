@@ -221,7 +221,7 @@ def calendar(room_id):
     checks = get_free_slots_for_user(current_user.id, room_id, now, 7)
     for check in checks:
         pprint(checks)
-    days = checks_to_calendar_days(checks)
+    
     # for day in days:
     #     print(day)
 
