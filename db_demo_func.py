@@ -137,6 +137,24 @@ def stats_for_plot_building(when):
             append.plot_input['colors']('red')
     return plot_input
 
+def stats_for_plot_time(building, month):
+    for day in range(31):
+        day_string = '2020-{:02d}-{:02d}'.format(month,day)
+        append.plot_input['labels'](day_string)
+        building_occupation_AM, floor_occupation_AM, building_occupation_rel_AM, floor_occupation_rel_AM = stats_occupation(when = day_string + '-AM')
+        append.plot_input['data_AM'](building_occupation_AM[building])
+        if building_occupation_rel_AM[building] < 1:
+            append.plot_input['colors_AM']('007bff')
+        else:
+            append.plot_input['colors_AM']('dc3545')
+        building_occupation_PM, floor_occupation_PM, building_occupation_rel_PM, floor_occupation_rel_PM = stats_occupation(when = day_string + '-PM')
+        append.plot_input['data_PM'](building_occupation_PM[building])
+        if building_occupation_rel_PM[building] < 1:
+            append.plot_input['colors_PM']('007bff')
+        else:
+            append.plot_input['colors_PM']('dc3545')
+    return plot_input
+
 # --------- Debugging functions
 
 def print_bookings():
