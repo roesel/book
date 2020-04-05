@@ -36,7 +36,7 @@
                     <tbody>
                         {% for booking in bookings %}
                             <tr>
-                                <td>{{ prettify_date(booking['when']) }}</td>
+                                <td>{{ prettify_when(booking['when']) }}</td>
                                 <td>{{ booking['room']['name'] }}</td>
                                 
                                

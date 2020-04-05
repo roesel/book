@@ -266,24 +266,21 @@ def stats_for_plot_buildings(when_day):
     plot_input['text'] = 'Load of EPFL campus per building'
     plot_input['label_AM'] = 'Rooms booked before lunch'
     plot_input['label_PM'] = 'Rooms booked after lunch'
-    building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel = stats_occupation(when = when_day + '_AM')
-    for b in building_occupation.keys():
+    building_occupation_AM, floor_occupation_AM, building_occupation_rel_AM, floor_occupation_rel_AM = stats_occupation(when = when_day + '-AM')
+    building_occupation_PM, floor_occupation_PM, building_occupation_rel_PM, floor_occupation_rel_PM = stats_occupation(when = when_day + '-PM')
+    for b in building_occupation_AM.keys():
         plot_input['labels'].append(b)
-        plot_input['data_AM'].append(building_occupation[b])
-        if building_occupation_rel[b] < 1:
+        plot_input['data_AM'].append(building_occupation_AM[b])
+        plot_input['data_PM'].append(building_occupation_PM[b])
+        if building_occupation_rel_AM[b] < 1:
             plot_input['colors_AM'].append('#007bff')
         else:
             plot_input['colors_AM'].append('#dc3545')
-    building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel = stats_occupation(when = when_day + '_PM')
-    for b in building_occupation.keys():
-        plot_input['labels'].append(b)
-        plot_input['data_PM'].append(building_occupation[b])
-        if building_occupation_rel[b] < 1:
+        if building_occupation_rel_PM[b] < 1:
             plot_input['colors_PM'].append('#007bff')
         else:
             plot_input['colors_PM'].append('#dc3545')
     return plot_input
-
 
 def prettify_date(date):
     """
@@ -297,7 +294,9 @@ def prettify_date(date):
     """
     return datetime.strptime(date, '%Y-%m-%d').strftime('%B %d, %Y')
 
-
+def prettify_when(when):
+    date = '-'.join(when.split('-')[0:3])
+    return prettify_date(date)+" "+when.split('-')[-1]
 
     
 # --------- Debugging functions
