@@ -27,13 +27,15 @@
                 <div class="date">{{d["day_number"]}}</div>
                 {% if not d["blocked"] %}
 
-                    {% for i in range(2) %}    
-
-                        {% if d["code"][i] == 2 %}
+                    {% for i in range(2) %}
+                        {% if d["code"][i] == 3 %}
                             <a href='/make-booking/{{ room_id }}/{{d["when"][i]}}/'><div class="event bg-success">Book</div></a>
+
+                        {% elif d["code"][i] == 2 %}
+                            <a href='/make-booking/{{ room_id }}/{{d["when"][i]}}/'><div class="event bg-warning">Book</div></a>
                             
                         {% elif d["code"][i] == 1 %}
-                            <a href='/make-booking/{{ room_id }}/{{d["when"][i]}}/'><div class="event bg-warning">Book</div></a>
+                            <a href='/make-booking/{{ room_id }}/{{d["when"][i]}}/'><div class="event" style="background-color: #e4606d;">Book</div></a>
                            
                         {% elif d["code"][i] == 0 %}
                             <!-- <p class="event text-danger font-weight-bold">{{ d["reasons"] }}</p> -->
