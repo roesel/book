@@ -101,13 +101,14 @@ def get_free_slots(room_id, start_date, num_days):
     '''
     checks = []
     for i in range(num_days):
-       when = start_date + timedelta(days=i)
-       available, reasons = check_bookings_count(when.strftime("%Y-%m-%d"), room_id)
-       checks.append({
-           'when': when.strftime("%Y-%m-%d"),
-           'available': bool(available),
-           'reasons': reasons
-        })
+        when = start_date + timedelta(days=i)
+        available_AM, reasons_AM = check_bookings_count(when.strftime("%Y-%m-%d") + '-AM', room_id)
+        available_PM, reasons_PM = check_bookings_count(when.strftime("%Y-%m-%d") + '-PM', room_id)
+        checks.append({
+            'when': when.strftime("%Y-%m-%d"),
+            'available': [available_AM, available_PM],
+            'reasons': [reasons_AM, reasons_PM]
+            })
 
     return checks
 
