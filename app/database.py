@@ -296,12 +296,12 @@ def stats_for_plot_buildings(when_day):
     plot_input['labels'] = []
     plot_input['data_AM'] = []
     plot_input['colors_AM'] = []
+    plot_input['label_AM'] = 'Morning'
     plot_input['data_PM'] = []
     plot_input['colors_PM'] = []
-    plot_input['text'] = 'Load of EPFL campus per building'
+    plot_input['label_PM'] = 'Evening'
+    plot_input['text'] = 'Load of EPFL campus by buildings'
     plot_input['under_text'] = 'Building'
-    plot_input['label_AM'] = 'Before lunch, AM'
-    plot_input['label_PM'] = 'After lunch, PM'
     building_occupation_AM, floor_occupation_AM, building_occupation_rel_AM, floor_occupation_rel_AM = stats_occupation(when = when_day + '-AM')
     building_occupation_PM, floor_occupation_PM, building_occupation_rel_PM, floor_occupation_rel_PM = stats_occupation(when = when_day + '-PM')
     for b in building_occupation_AM.keys():
@@ -323,19 +323,18 @@ def stats_for_plot_time(building, month):
     plot_input['labels'] = []
     plot_input['data_AM'] = []
     plot_input['colors_AM'] = []
-    plot_input['label_AM'] = 'Before lunch, AM'
+    plot_input['label_AM'] = 'Morning'
     plot_input['data_PM'] = []
     plot_input['colors_PM'] = []
-    plot_input['label_PM'] = 'After lunch, PM'
+    plot_input['label_PM'] = 'Evening'
     plot_input['text'] = 'Load of the building during the month'
-    plot_input['under_text'] = 'Date'
+    plot_input['under_text'] = 'Day'
     plot_input['label'] = 'Rooms booked in this building'
     for day in range(31):
         day_string = '2020-{:02d}-{:02d}'.format(month,day+1)
         print(day_string)
-        plot_input['labels'].append(day_string)
+        plot_input['labels'].append('{:d}'.format(day+1))
         building_occupation_AM, floor_occupation_AM, building_occupation_rel_AM, floor_occupation_rel_AM = stats_occupation(when = day_string + '-AM')
-        print(building_occupation_AM.keys())
         plot_input['data_AM'].append(building_occupation_AM[building])
         if building_occupation_rel_AM[building] < 1:
             plot_input['colors_AM'].append('#3395ff')
@@ -349,15 +348,15 @@ def stats_for_plot_time(building, month):
             plot_input['colors_PM'].append('#dc3545')
     return plot_input
 
-def stats_for_plot_time_floors(building, floor, month):
+def stats_for_plot_time_floor(building, floor, month):
     plot_input = {}
     plot_input['labels'] = []
     plot_input['data_AM'] = []
     plot_input['colors_AM'] = []
-    plot_input['label_AM'] = 'Before lunch, AM'
+    plot_input['label_AM'] = 'Morning'
     plot_input['data_PM'] = []
     plot_input['colors_PM'] = []
-    plot_input['label_PM'] = 'After lunch, PM'
+    plot_input['label_PM'] = 'Evening'
     plot_input['text'] = 'Load of {:01d} floor during the month'.format(floor)
     plot_input['under_text'] = 'Date'
     plot_input['label'] = 'Rooms booked on {:01d} floor'.format(floor)
@@ -377,6 +376,15 @@ def stats_for_plot_time_floors(building, floor, month):
         else:
             plot_input['colors_PM'].append('#dc3545')
     return plot_input
+
+def stats_for_plot_time_floors(building, month):
+    plot_input_pack = ()
+    rows = Room.select(Room.floor).where(Room.building == building).group_by(Room.floor)
+    floors_of_the_building = [row.floor for row in rows]
+    for floors in floors_of_the_building:
+        stats_for_plot_time_floor(building = building, floor = floor, month = month)
+        plot_input_pack.append(stats_for_plot_time_floor(building = building, floor = floor, month = month))
+    return plot_input_pack
 
 def prettify_date(date):
     """
