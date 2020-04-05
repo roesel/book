@@ -263,8 +263,12 @@ def status(when):
 
     pretty_date = prettify_date(when)
 
+    limits = get_limits()
+    print(limits)
+
     return render_template('status.html', br = br, stats=stats, plot_code=plot_code, when=when, 
-                            pretty_date=pretty_date, prev_when=prev_when, next_when=next_when)
+                            pretty_date=pretty_date, prev_when=prev_when, next_when=next_when,
+                            limits=limits)
 
 
 @app.route('/team_info/')

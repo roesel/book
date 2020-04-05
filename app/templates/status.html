@@ -6,21 +6,33 @@
 
 {% block content %}
 <div class="container">
-    <div class="row mb-4">
+    <div class="row mb-2">
         <div class="col-md-6">
             <h2>Status</h2>
         </div>
+
         <div class="col-md-6 text-right">
             <h2>{{pretty_date}}</h2>
             <a href="/status/{{prev_when}}/">&#8592; Previous day</a> &middot; <a href="/status/{{next_when}}/">Next day &#8594;</a>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <p>Information will be here.</p>
+        <div class="col-md-3">
+            <h4>Current limits</h4>
+            <ul class="list-group">
+                {% for k,v in limits.items() %}
+                <li class="list-group-item">{{v}} 
+                    {% if v > 1 %}
+                        people
+                    {% else %}
+                        person
+                    {% endif %}
+                    per {{k}}.</li>
+                {% endfor %}
+            </ul>
         </div>
-        <div class="col-md-6">
-            <canvas id="bar-chart" width="400" height="250"></canvas>
+        <div class="col-md-9">
+            <canvas id="bar-chart" width="600" height="250"></canvas>
         </div>
     </div>
 </div>
