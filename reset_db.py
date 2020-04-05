@@ -169,11 +169,7 @@ bookings = [
     {"when":"2020-04-05-AM", "who":1, "room":1, "status":"approved"},
     {"when":"2020-04-05-AM", "who":2, "room":2, "status":"approved"},
     {"when":"2020-04-05-AM", "who":3, "room":3, "status":"approved"},
-    {"when":"2020-04-08-AM", "who":3, "room":0, "status":"approved"},
-    {"when":"2020-04-05-PM", "who":1, "room":35, "status":"approved"},
-    {"when":"2020-04-06-PM", "who":3, "room":36, "status":"denied"},
-    {"when":"2020-04-05-PM", "who":4, "room":37, "status":"pending"},
-    {"when":"2020-04-05-PM", "who":4, "room":40, "status":"pending"},
+    {"when":"2020-04-08-AM", "who":3, "room":1, "status":"approved"},
 ]
 
 for bk in bookings:
