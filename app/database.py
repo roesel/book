@@ -20,13 +20,15 @@ def create_booking(who, when, room_id):
     return new_booking.id
 
 def approve_booking(booking_id):
-    requested_booking = Booking.get(booking_id=booking_id)
+    requested_booking = Booking.get(id=booking_id)
     requested_booking.status = 'approved'
+    requested_booking.save()
     return True
 
 def deny_booking(booking_id):
-    requested_booking = Booking.get(booking_id=booking_id)
+    requested_booking = Booking.get(id=booking_id)
     requested_booking.status = 'denied'
+    requested_booking.save()
     return True
 
 def get_bookings_of_user(user_id):
@@ -38,7 +40,6 @@ def get_bookings_of_room(room_name):
     query = Booking.select().join(Room).where(Room.name==room_name)
     room_bookings = [model_to_dict(c) for c in query]
     return room_bookings
-
 
 def get_pending_bookings(sort_by='booking_id'):
     query = Booking.select().where(Booking.status == 'pending')

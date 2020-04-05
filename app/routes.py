@@ -74,6 +74,22 @@ def manage():
         # b["user"] = 'Honeybadger'
     return render_template('manage.html', bookings=bookings, user_name=current_user.name)
 
+@app.route('/deny-booking/<int:id>/')
+def deny_booking_id(id):
+    # TODO: DB: Check for permission (if the current user is allowed to remove this booking)
+    success = deny_booking(id)
+    if success:
+        pass
+    return redirect('/manage/')
+
+@app.route('/approve-booking/<int:id>/')
+def approve_booking_id(id):
+    # TODO: DB: Check for permission (if the current user is allowed to remove this booking)
+    success = approve_booking(id)
+    if success:
+        pass    
+    return redirect('/manage/')
+
 @app.route('/cancel-booking/<int:id>/')
 def cancel_booking(id):
     # TODO: DB: Check for permission (if the current user is allowed to remove this booking)
