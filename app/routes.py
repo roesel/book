@@ -148,7 +148,9 @@ def checks_to_calendar_days(checks):
         })
         pick_checks = False
 
-    return days
+    title = ' '.join([now.strftime("%B"), str(now.year)])
+
+    return days, title
 
     # Dummy
     # days = [
