@@ -303,11 +303,11 @@ def stats_for_plot_buildings(when_day):
         plot_input['data_AM'].append(building_occupation_AM[b])
         plot_input['data_PM'].append(building_occupation_PM[b])
         if building_occupation_rel_AM[b] < 1:
-            plot_input['colors_AM'].append('#007bff')
+            plot_input['colors_AM'].append('#3395ff')
         else:
             plot_input['colors_AM'].append('#dc3545')
         if building_occupation_rel_PM[b] < 1:
-            plot_input['colors_PM'].append('#007bff')
+            plot_input['colors_PM'].append('#0062cc')
         else:
             plot_input['colors_PM'].append('#dc3545')
     return plot_input
@@ -332,13 +332,13 @@ def stats_for_plot_time(building, month):
         print(building_occupation_AM.keys())
         plot_input['data_AM'].append(building_occupation_AM[building])
         if building_occupation_rel_AM[building] < 1:
-            plot_input['colors_AM'].append('#007bff')
+            plot_input['colors_AM'].append('#3395ff')
         else:
             plot_input['colors_AM'].append('#dc3545')
         building_occupation_PM, floor_occupation_PM, building_occupation_rel_PM, floor_occupation_rel_PM = stats_occupation(when = day_string + '-PM')
         plot_input['data_PM'].append(building_occupation_PM[building])
         if building_occupation_rel_PM[building] < 1:
-            plot_input['colors_PM'].append('#007bff')
+            plot_input['colors_PM'].append('#0062cc')
         else:
             plot_input['colors_PM'].append('#dc3545')
     return plot_input
