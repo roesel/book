@@ -44,15 +44,15 @@
                             {% elif not d["reasons"][2] %}
                                 <p class="event text-danger font-weight-bold">Full building</p>     
                             {% else %}
-                                <div class="event bg-danger">Full</div>
+                                <div class="event text-danger">Full</div>
                             {% endif %}
 
                         {% elif d["code"][i] == -1 %}
-                            <p class="event text-success">Approved</p>  
+                            <p class="event text-success font-weight-bold">Approved</p>  
                         {% elif d["code"][i] == -2 %}
-                            <p class="event bg-primary">Pending</p>  
+                            <p class="event text-primary font-weight-bold">Pending</p>  
                         {% else %}
-                            <p class="event bg-secondary">Not defined</p>
+                            <p class="event text-secondary font-weight-bold">Not defined</p>
                         {% endif %}
                         
                     {% endfor %}
