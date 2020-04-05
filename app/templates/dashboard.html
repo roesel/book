@@ -15,7 +15,15 @@
             </div>
         </div>
         <div class="col-md-8">
-            <h2>My Bookings</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <h2>Future bookings</h2>
+                </div>
+                <div class="col-md-4">
+                    <a href="/book/" class="btn btn-primary btn-block" role="button">+ New booking</a>
+                </div>
+            </div>
+            
             {% if not bookings %}
                 <p>You have no confirmed bookings.</p>
             {% else %}
@@ -50,7 +58,15 @@
                                         <p class=" text-primary">Pending</p>    
                                     {% endif %}
                                 </td>
-                                <td> </td>
+                                <td> 
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar" role="progressbar" style="width: 25%;" 
+                                             aria-valuenow="{{booking['floor_load_relative']}}" aria-valuemin="0" aria-valuemax="100">
+                                                {{booking['floor_load_absolute']}}
+                                            </div>
+                                      </div>
+
+                                </td>
                                 <td>
                                     <a type="button" class="btn btn-danger btn-sm" href="/cancel-booking/{{ booking['id'] }}/">Delete</a>
                                 </td>
@@ -60,7 +76,7 @@
                 </table>
             {% endif %}
             </ol>
-            <a href="/book/" class="btn btn-primary btn-block" role="button">New booking</a>
+            
         </div>
     </div>
 </div>
