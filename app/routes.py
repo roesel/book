@@ -84,12 +84,7 @@ def book():
             return "Could not retireve rooms"
         return render_template('book.html', rooms=rooms, user_name=current_user.name)
 
-
-@app.route('/choose-date/<int:room_id>/', methods=['POST', 'GET'])
-def choose_date(room_id):
-    now = datetime.now()
-    checks = get_free_slots(room_id, now, 7)
-
+def checks_to_calendar_days(checks):
     ## Generate input data for calendar
     # TODO: This needs to be done MUCH better
     days = []
@@ -107,8 +102,25 @@ def choose_date(room_id):
                 d['reasons'] = c["reasons"]
                 if c["available"]:
                     d["available"] = True
+    return days
+
+@app.route('/choose-date/<int:room_id>/', methods=['POST', 'GET'])
+def choose_date(room_id):
+    now = datetime.now()
+    checks = get_free_slots(room_id, now, 7)
+
+    ## Generate input data for calendar
+    days = checks_to_calendar_days(checks)
     
     return render_template('choose_date.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days)
+
+@app.route('/calendar/<int:room_id>/', methods=['POST', 'GET'])
+def calendar(room_id):
+    now = datetime.now()
+    checks = get_free_slots(room_id, now, 7)
+    days = checks_to_calendar_days(checks)
+
+    return render_template('calendar.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days)
 
 @app.route('/make-booking/<int:room_id>/<when>/', methods=['POST', 'GET'])
 def make_booking(room_id, when):

@@ -1,0 +1,61 @@
+
+    <!-- Calendar -->
+    <div class="calendar shadow bg-white p-5">
+        <!--<div class="d-flex align-items-center"><i class="fa fa-calendar fa-3x mr-3"></i>
+        <h2 class="month font-weight-bold mb-0 text-uppercase">December 2019</h2>
+        </div>-->
+        <!--<p class="font-italic text-muted mb-5">No events for this day.</p>-->
+        <h3 class="font-weight-bold mb-3 text-uppercase">April 2020</h2>
+
+        <ol class="day-names list-unstyled">
+            <li class="font-weight-bold text-uppercase text-center">Mon</li>
+            <li class="font-weight-bold text-uppercase text-center">Tue</li>
+            <li class="font-weight-bold text-uppercase text-center">Wed</li>
+            <li class="font-weight-bold text-uppercase text-center">Thu</li>
+            <li class="font-weight-bold text-uppercase text-center">Fri</li>
+            <li class="font-weight-bold text-uppercase text-center">Sat</li>
+            <li class="font-weight-bold text-uppercase text-center">Sun</li>
+        </ol>
+
+        <ol class="days list-unstyled  text-center">
+            {% for d in days %}
+                {% if not d["outside"] %}
+                    <li>
+                {% else %}
+                    <li class="outside">
+                {% endif %}
+                
+                <div class="date">{{d["day_number"]}}</div>
+                {% if not d["blocked"] %}
+                    {% if d["available"] %}
+                        <a href='/make-booking/{{ room_id }}/{{d["when"]}}/'><div class="event bg-primary">Book</div></a>
+                    {% else %}
+                        {% if not d["reasons"][0] %}
+                            <div class="event bg-danger">Full room</div>
+                        {% elif not d["reasons"][1] %}
+                            <div class="event bg-danger">Full floor</div>
+                        {% elif not d["reasons"][2] %}
+                            <div class="event bg-danger">Full building</div>
+                        {% else %}
+                            <div class="event bg-danger">Full</div>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+
+
+            </li>
+            {% endfor %}
+            <!--
+            <li>
+                <div class="date">1</div>
+                <div class="event bg-success">Event with Long Name</div>
+                <div class="event bg-primary">Event Name</div>
+                <div class="event all-day begin span-2 bg-warning">Event Name</div>
+                <div class="event all-day end bg-success">Event Name</div>
+                <div class="event bg-info">Event with Longer Name</div>
+                <div class="event bg-primary">Event Name</div>
+                <div class="event bg-success">Event Name</div>
+            </li>-->
+        
+        </ol>
+    </div>
