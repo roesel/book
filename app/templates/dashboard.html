@@ -8,6 +8,19 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4">
+
+
+
+            {%with messages = get_flashed_messages()%}
+                {%if messages%}
+                    {%for message in messages%}
+                        <div class="alert alert-danger" role="alert">
+                            {{message}}
+                        </div>
+                    {%endfor%}
+                {%endif%}
+            {%endwith%}
+
             <h2>Profile</h2>
             <div class="alert alert-secondary" role="alert">
                 <h4>{{current_user.name}}</h4>

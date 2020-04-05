@@ -18,6 +18,7 @@ from app.models import User
 from app.forms import LoginForm
 
 
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -54,16 +55,17 @@ def logout():
 @login_required
 @app.route('/dashboard/')
 def dashboard():
-    # try:
-    bookings = get_bookings_of_user(current_user.id)
-    # except:
-    #    return "Could not retrieve your bookings"
+    try:
+       bookings = get_bookings_of_user(current_user.id)
+    except:
+       return "Could not retrieve your bookings"
     return render_template('dashboard.html', bookings=bookings, user_name=current_user.name, prettify_when=prettify_when)
 
 
 @login_required
 @app.route('/manage/')
 def manage():
+   
     bookings = get_pending_bookings()
     #try:
     #   bookings = get_pending_bookings(current_user.id)
@@ -76,6 +78,8 @@ def manage():
 
 @app.route('/deny-booking/<int:id>/')
 def deny_booking_id(id):
+    params = get_booking_text(id)
+    flash(f'The booking of the room {params[0]} on {params[1]} for {params[2]} was denied.') 
     # TODO: DB: Check for permission (if the current user is allowed to remove this booking)
     success = deny_booking(id)
     if success:
@@ -84,6 +88,8 @@ def deny_booking_id(id):
 
 @app.route('/approve-booking/<int:id>/')
 def approve_booking_id(id):
+    params = get_booking_text(id)
+    flash(f'The booking of the room {params[0]} on {params[1]} for {params[2]} was approved.') 
     # TODO: DB: Check for permission (if the current user is allowed to remove this booking)
     success = approve_booking(id)
     if success:
@@ -92,6 +98,8 @@ def approve_booking_id(id):
 
 @app.route('/cancel-booking/<int:id>/')
 def cancel_booking(id):
+    params = get_booking_text(id)
+    flash(f'The booking of the room {params[0]} on {params[1]} for {params[2]} was canceled.') 
     # TODO: DB: Check for permission (if the current user is allowed to remove this booking)
     try:
         num_of_deleted_rows = delete_booking(id)
@@ -138,9 +146,7 @@ def checks_to_calendar_days(checks):
         })
         pick_checks = False
 
-    title = ' '.join([now.strftime("%B"), str(now.year)])
-
-    return days, title
+    return days
 
     # Dummy
     # days = [
@@ -199,9 +205,9 @@ def choose_date(room_id):
     checks = get_free_slots_for_user(current_user.id, room_id, now, 7)
 
     ## Generate input data for calendar
-    days, title = checks_to_calendar_days(checks)
+    days = checks_to_calendar_days(checks)
     
-    return render_template('choose_date.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days, title=title)
+    return render_template('choose_date.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days)
 
 from pprint import pprint
 
@@ -209,23 +215,13 @@ from pprint import pprint
 def calendar(room_id):
     now = datetime.now()
     checks = get_free_slots_for_user(current_user.id, room_id, now, 7)
+    for check in checks:
+        pprint(checks)
+    days = checks_to_calendar_days(checks)
+    # for day in days:
+    #     print(day)
 
-    # for check in checks:
-    #     if check['code'][0] > 0:
-    #         if False in check['reasons'][0]:
-    #             print(check['code'][0], check['reasons'][0])
-    #             print('\n')
-    #     if check['code'][0] == 0:
-    #         if check['reasons'][0] == [True] * 3:
-    #             print(check['code'][0], check['reasons'][0])
-    #             print('\n')
-    # print('Passed test!')
-
-    days, title = checks_to_calendar_days(checks)
-    for day in days:
-        print(day)
-
-    return render_template('calendar.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days, title=title)
+    return render_template('calendar.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days)
 
 @app.route('/make-booking/<int:room_id>/<when>/', methods=['POST', 'GET'])
 def make_booking(room_id, when):

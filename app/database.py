@@ -25,6 +25,13 @@ def approve_booking(booking_id):
     requested_booking.save()
     return True
 
+def get_booking_text(booking_id):
+    booking = Booking.get(id=booking_id)
+    user_name = User.get(id=booking.who).name
+    date = prettify_when(booking.when)
+    room = Room.get(id=booking.room).name
+    return [room, date, user_name]
+
 def deny_booking(booking_id):
     requested_booking = Booking.get(id=booking_id)
     requested_booking.status = 'denied'

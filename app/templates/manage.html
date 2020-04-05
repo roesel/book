@@ -5,9 +5,25 @@ Manage bookings
 {% endblock %}
 
 {% block content %}
+
+
+
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+
+            {%with messages = get_flashed_messages()%}
+                {%if messages%}
+                    {%for message in messages%}
+                        <div class="alert alert-danger" role="alert">
+                            {{message}}
+                        </div>
+                    {%endfor%}
+                {%endif%}
+            {%endwith%}
+
+
             <div class="alert alert-danger" role="alert">
                 This page would only be available to administrators. However, we are showing it to you for the purpouses of the demo.  
             </div>
