@@ -196,18 +196,21 @@ def make_booking(room_id, when):
 @app.route('/status/', defaults={'when': '2020-04-05'})
 @app.route('/status/<when>/')
 def status(when):
-    bo, fo, br, fr = stats_occupation(when)
+    
+    stats = stats_for_plot_buildings(when)
 
-    print(bo)
-
-    stats = stats_for_plot_building(when)
-
-    print(stats)
+    #get_plot_code
 
     labels_string = '","'.join(stats["labels"])
-    colors_string = '","'.join(stats["colors"])
-    data_string = ','.join([str(x) for x in stats["data"]])
-    label_string = stats["label"]
+    
+    colors_string_am = '","'.join(stats["colors_am"])
+    data_am_string = ','.join([str(x) for x in stats["data_am"]])
+    label_string_am = stats["label_am"]
+    
+    colors_string_pm = '","'.join(stats["colors_pm"])
+    data_pm_string = ','.join([str(x) for x in stats["data_pm"]])
+    label_string_pm = stats["label_pm"]
+    
     text_string = stats["text"]
 
     plot_code = '''<script>
@@ -218,9 +221,14 @@ def status(when):
         labels: ["'''+labels_string+'''"],
         datasets: [
             {
-            label: "'''+label_string+'''",
-            backgroundColor: ["'''+colors_string+'''"],
-            data: ['''+data_string+''']
+            label: "'''+label_string_am+'''",
+            backgroundColor: ["'''+colors_string_am+'''"],
+            data: ['''+data_string_am+''']
+            },
+            {
+            label: "'''+label_string_pm+'''",
+            backgroundColor: ["'''+colors_string_pm+'''"],
+            data: ['''+data_string_pm+''']
             }
         ]
         },
@@ -254,19 +262,18 @@ def status(when):
     });
     </script>'''
     
+    # Date loginc for next/previous
     current_date = datetime.strptime(when, '%Y-%m-%d')
     next_date = current_date + timedelta(days=1)
     prev_date = current_date + timedelta(days=-1)
-
     next_when = next_date.strftime('%Y-%m-%d')
     prev_when = prev_date.strftime('%Y-%m-%d')
-
     pretty_date = prettify_date(when)
-
+    
+    # Limits
     limits = get_limits()
-    print(limits)
 
-    return render_template('status.html', br = br, stats=stats, plot_code=plot_code, when=when, 
+    return render_template('status.html', stats=stats, plot_code=plot_code, when=when, 
                             pretty_date=pretty_date, prev_when=prev_when, next_when=next_when,
                             limits=limits)
 
