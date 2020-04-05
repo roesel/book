@@ -31,10 +31,10 @@
                     {% for i in range(2) %}    
 
                         {% if d["code"][i] == 2 %}
-                            <a href='/make-booking/{{ room_id }}/{{d["when"]}}/'><div class="event bg-success">Book</div></a>
+                            <a href='/make-booking/{{ room_id }}/{{d["when"][i]}}/'><div class="event bg-success">Book</div></a>
                             
                         {% elif d["code"][i] == 1 %}
-                            <a href='/make-booking/{{ room_id }}/{{d["when"]}}/'><div class="event bg-warning">Book</div></a>
+                            <a href='/make-booking/{{ room_id }}/{{d["when"][i]}}/'><div class="event bg-warning">Book</div></a>
                            
                         {% elif d["code"][i] == 0 %}  
                             {% if not d["reasons"][0] %}
