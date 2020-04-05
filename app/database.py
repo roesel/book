@@ -19,6 +19,16 @@ def create_booking(who, when, room_id):
     new_booking.save()
     return new_booking.id
 
+def approve_booking(booking_id):
+    requested_booking = Booking.get(booking_id=booking_id)
+    requested_booking.status = 'approved'
+    return True
+
+def deny_booking(booking_id):
+    requested_booking = Booking.get(booking_id=booking_id)
+    requested_booking.status = 'denied'
+    return True
+
 def get_bookings_of_user(user_id):
     query = Booking.select().where(Booking.who==user_id)
     user_bookings = [model_to_dict(c) for c in query]
@@ -26,8 +36,9 @@ def get_bookings_of_user(user_id):
 
 def get_bookings_of_room(room_name):
     query = Booking.select().join(Room).where(Room.name==room_name)
-    room_bookings = [model_to_dict(c) for c in query]
+    room_bookings = [model_to_ict(c) for c in query]
     return room_bookings
+
 
 def delete_booking(id):
     query = Booking.delete().where(Booking.id == id)
