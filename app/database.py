@@ -146,15 +146,16 @@ def get_free_slots_for_user(user_id, room_id, start_date, num_days):
             user_id, room_id, when.strftime("%Y-%m-%d") + '-PM', status='approved')
 
         pending = {}
-        pending['AM'] = check_bookings_of_user_when(
+        pending['AM'] = check_bookings_of_user_room_when(
             user_id, room_id, when.strftime("%Y-%m-%d") + '-AM', status='pending')
-        pending['PM'] = check_bookings_of_user_when(
+        pending['PM'] = check_bookings_of_user_room_when(
             user_id, room_id, when.strftime("%Y-%m-%d") + '-PM', status='pending')
 
         available, reasons = {}, {}
         available['AM'], reasons['AM'] = check_bookings_count(when.strftime("%Y-%m-%d") + '-AM', room_id)
         available['PM'], reasons['PM'] = check_bookings_count(when.strftime("%Y-%m-%d") + '-PM', room_id)
 
+        floor_count = {}
         floor_count['AM'] = get_floor_count(
             when.strftime("%Y-%m-%d") + '-AM', room_id, status='approved')
         floor_count['PM'] = get_floor_count(

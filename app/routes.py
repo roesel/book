@@ -119,13 +119,13 @@ from calendar import Calendar
 def checks_to_calendar_days(checks):
     ## Generate input data for calendar
     # TODO: This needs to be done MUCH better
-    now = checks[0]['when'].strptime(date, '%Y-%m-%d')
+    now = datetime.strptime(checks[0]['when'], '%Y-%m-%d')
     cal = Calendar(0)
     pick_checks = False
     i = -1
     days = []
     for day in cal.itermonthdates(now.year, now.month):
-        if now + timedelta(6) >= day >= now:
+        if now.date() + timedelta(6) >= day >= now.date():
             pick_checks = True
             i += 1
         days.append({
@@ -193,7 +193,7 @@ def checks_to_calendar_days(checks):
 @app.route('/choose-date/<int:room_id>/', methods=['POST', 'GET'])
 def choose_date(room_id):
     now = datetime.now()
-    checks = get_free_slots(room_id, now, 7)
+    checks = get_free_slots_for_user(current_user.id, room_id, now, 7)
 
     ## Generate input data for calendar
     days = checks_to_calendar_days(checks)
@@ -203,7 +203,7 @@ def choose_date(room_id):
 @app.route('/calendar/<int:room_id>/', methods=['POST', 'GET'])
 def calendar(room_id):
     now = datetime.now()
-    checks = get_free_slots(room_id, now, 7)
+    checks = get_free_slots_for_user(current_user.id, room_id, now, 7)
     days = checks_to_calendar_days(checks)
     for day in days:
         print(day)
