@@ -39,9 +39,10 @@ def get_bookings_of_room(room_name):
     room_bookings = [model_to_dict(c) for c in query]
     return room_bookings
 
-def get_pending_bookings():
+def get_pending_bookings(sort_by=booking_id):
     query = Booking.select().where(Booking.status == 'pending')
     pending_bookings = [model_to_dict(c) for c in query]
+    pending_bookings(sort_by = 'when')
     return pending_bookings
 
 def delete_booking(id):
