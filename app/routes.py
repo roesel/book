@@ -54,11 +54,13 @@ def logout():
 @login_required
 @app.route('/dashboard/')
 def dashboard():
-    # try:
-    bookings = get_bookings_of_user(current_user.id)
-    # except:
-    #    return "Could not retrieve your bookings"
-    return render_template('dashboard.html', bookings=bookings, user_name=current_user.name, prettify_when=prettify_when)
+    try:
+        bookings = get_bookings_of_user(current_user.id)
+    except:
+       return "Could not retrieve your bookings"
+    return render_template(
+        'dashboard.html', bookings=bookings,
+        user_name=current_user.name, prettify_when=prettify_when)
 
 
 @login_required
@@ -72,7 +74,9 @@ def manage():
     
     # for b in bookings:
         # b["user"] = 'Honeybadger'
-    return render_template('manage.html', bookings=bookings, user_name=current_user.name, prettify_when=prettify_when)
+    return render_template(
+        'manage.html', bookings=bookings,
+        user_name=current_user.name,prettify_when=prettify_when)
 
 @app.route('/deny-booking/<int:id>/')
 def deny_booking_id(id):
@@ -201,7 +205,9 @@ def choose_date(room_id):
     ## Generate input data for calendar
     days, title = checks_to_calendar_days(checks)
     
-    return render_template('choose_date.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days, title=title)
+    return render_template(
+        'choose_date.html', checks=checks, user_name=current_user.name,
+        room_id=room_id, days=days, title=title)
 
 from pprint import pprint
 
@@ -222,10 +228,12 @@ def calendar(room_id):
     # print('Passed test!')
 
     days, title = checks_to_calendar_days(checks)
-    for day in days:
-        print(day)
+    # for day in days:
+    #     print(day)
 
-    return render_template('calendar.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days, title=title)
+    return render_template(
+        'calendar.html', checks=checks, user_name=current_user.name,
+        room_id=room_id, days=days, title=title)
 
 @app.route('/make-booking/<int:room_id>/<when>/', methods=['POST', 'GET'])
 def make_booking(room_id, when):
