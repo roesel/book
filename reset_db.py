@@ -166,13 +166,13 @@ for ri in rooms:
 # Make demo bookings
 
 bookings = [
-    {"when":"2020-04-05", "who":1, "room":4, "status":"pending"},
-    {"when":"2020-04-07", "who":1, "room":4, "status":"approved"},
-    {"when":"2020-04-05", "who":2, "room":7, "status":"denied"},
-    {"when":"2020-04-05", "who":1, "room":3, "status":"approved"},
-    {"when":"2020-04-06", "who":3, "room":4, "status":"denied"},
-    {"when":"2020-04-05", "who":4, "room":7, "status":"pending"},
-    {"when":"2020-04-05", "who":4, "room":2, "status":"pending"},
+    {"when":"2020-04-05-AM", "who":1, "room":4, "status":"pending"},
+    {"when":"2020-04-07-AM", "who":1, "room":4, "status":"approved"},
+    {"when":"2020-04-05-AM", "who":2, "room":7, "status":"denied"},
+    {"when":"2020-04-05-PM", "who":1, "room":3, "status":"approved"},
+    {"when":"2020-04-06-PM", "who":3, "room":4, "status":"denied"},
+    {"when":"2020-04-05-PM", "who":4, "room":7, "status":"pending"},
+    {"when":"2020-04-05-PM", "who":4, "room":2, "status":"pending"},
 ]
 
 for bk in bookings:

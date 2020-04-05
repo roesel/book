@@ -98,43 +98,65 @@ def book():
         return render_template('book.html', rooms=rooms, user_name=current_user.name)
 
 from random import randint
+from calendar import Calendar
 
 def checks_to_calendar_days(checks):
     ## Generate input data for calendar
     # TODO: This needs to be done MUCH better
+    now = checks[0]['when'].strptime(date, '%Y-%m-%d')
+    cal = Calendar(0)
+    pick_checks = False
+    i = -1
+    days = []
+    for day in cal.itermonthdates(now.year, now.month):
+        if now + timedelta(6) >= day >= now:
+            pick_checks = True
+            i += 1
+        days.append({
+            'day_number': day.day,
+            'when': day.strftime('%Y-%m-%d'),
+            'outside': True if day.month != now.month else False,
+            'available': checks[i]['code'] if i > -1 else None,
+            'reasons': checks[i]['reasons'] if i > -1 else None,
+            'blocked': True if day.month != now.month else False
+        })
 
-    days = [
-        {
-            'day_number': i,
-            'when': '2020-03-{:02d}'.format(i),
-            'outside': True,
-            'available': 0,
-            'blocked': True
-        }
-        for i in range(29, 31)
-    ]
-    days = days + [
-        {
-            'day_number': i,
-            'when': '2020-03-{:02d}'.format(i),
-            'outside': False,
-            'available': randint(-1, 2) for i in range(2),
-            'blocked': False,
-            'reasons': [[bool(randint(0, 1)) for i in range(3)] for k in range(2)]
-        }
-        for i in range(1, 31)
-    ]
-    days = days + [
-        {
-            'day_number': i,
-            'when': '2020-04-{:02d}'.format(i),
-            'outside': True,
-            'available': 0,
-            'blocked': True
-        }
-        for i in range(1, 3)
-    ]
+    return days
 
+    # Dummy
+    # days = [
+    #     {
+    #         'day_number': i,
+    #         'when': '2020-03-{:02d}'.format(i),
+    #         'outside': True,
+    #         'available': 0,
+    #         'blocked': True
+    #     }
+    #     for i in range(29, 31)
+    # ]
+    # days = days + [
+    #     {
+    #         'day_number': i,
+    #         'when': '2020-03-{:02d}'.format(i),
+    #         'outside': False,
+    #         'available': [randint(-1, 2) for i in range(2)],
+    #         'blocked': False,
+    #         'reasons': [[bool(randint(0, 1)) for i in range(3)] for k in range(2)]
+    #     }
+    #     for i in range(1, 31)
+    # ]
+    # days = days + [
+    #     {
+    #         'day_number': i,
+    #         'when': '2020-04-{:02d}'.format(i),
+    #         'outside': True,
+    #         'available': 0,
+    #         'blocked': True
+    #     }
+    #     for i in range(1, 3)
+    # ]
+
+    # Another dummy
     # days = []
     # days.append({'day_number':29, 'when':'2020-03-{:02d}'.format(29), 'outside':True, 'available':False, 'blocked':True})
     # days.append({'day_number':30, 'when':'2020-03-{:02d}'.format(30), 'outside':True, 'available':False, 'blocked':True})
@@ -150,7 +172,7 @@ def checks_to_calendar_days(checks):
     #             d['reasons'] = c["reasons"]
     #             if c["available"]:
     #                 d["available"] = True
-    return days
+    # return days
 
 @app.route('/choose-date/<int:room_id>/', methods=['POST', 'GET'])
 def choose_date(room_id):
