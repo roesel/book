@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Manage bookings
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Manage bookings</h2>
+            {% if not bookings %}
+                <p>There are no requested bookings.</p>
+            {% else %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>User</th>
+                            <th>Room</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                            <tr>
+                                <td>{{ prettify_date(booking['when']) }}</td>
+                                <td>{{ booking['who']['name'] }}</td>
+                                <td>{{ booking['room']['name'] }}</td>
+                                <td>
+                                    <!--<a class="text-danger" href="/cancel-booking/{{ booking['id'] }}/">Cancel</a>-->
+                                    <a type="button" class="btn btn-success btn-sm" href="#">Approve</a>
+                                    <a type="button" class="btn btn-danger btn-sm" href="#">Deny</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

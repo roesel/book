@@ -61,6 +61,18 @@ def dashboard():
     return render_template('dashboard.html', bookings=bookings, user_name=current_user.name)
 
 
+@login_required
+@app.route('/manage/')
+def manage():
+    try:
+       bookings = get_bookings_of_user(current_user.id)
+    except:
+       return "Could not retrieve your bookings"
+    
+    # for b in bookings:
+        # b["user"] = 'Honeybadger'
+    return render_template('manage.html', bookings=bookings, user_name=current_user.name)
+
 @app.route('/cancel-booking/<int:id>/')
 def cancel_booking(id):
     # TODO: DB: Check for permission (if the current user is allowed to remove this booking)
