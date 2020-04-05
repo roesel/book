@@ -89,7 +89,7 @@ def check_bookings_count(when, room_id, status='approved'):
         building_check = True
 
     count_check = room_check * floor_check * building_check
-    return count_check, [room_check, floor_check, building_check]
+    return bool(count_check), [room_check, floor_check, building_check]
 
 def check_create_booking(who, when, room_id):
     check_bookability, _ = check_bookings_count(when=when, room_id=room_id)
@@ -112,11 +112,17 @@ def get_floor_count(when, room_id, status='approved'):
 
 def check_bookings_of_user_room_when(user_id, room_id, when, status='approved'):
     assert status in ['approved', 'pending', 'denied']
-    count = Booking.select().join(Room).where(
+    print(when)
+    print(status)
+    query = Booking.select().join(Room).where(
         (Booking.who == user_id) &
         (Room.id == room_id) &
         (Booking.when == when) &
-        (Booking.status == status)).count()
+        (Booking.status == status))
+    count = query.count()
+    if count > 0:
+        print('peow')
+        print(query[0].status)
     assert count in [0, 1]
     return bool(count)
 
@@ -124,9 +130,9 @@ def count_to_int(count, max_count=POP_LIMIT_FLOOR, num_int=2):
             step = float(max_count) / num_int
             for i in range(num_int - 1):
                 if i <= count < i + step:
-                    return i
+                    return num_int - 1 - i
             if max_count - step <= count <= max_count:
-                return num_int - 1
+                return 0
             else:
                 return None
 
@@ -162,6 +168,7 @@ def get_free_slots_for_user(user_id, room_id, start_date, num_days):
             when.strftime("%Y-%m-%d") + '-PM', room_id, status='approved')
 
         floor_count['AM'] = count_to_int(floor_count['AM'])
+        floor_count['PM'] = count_to_int(floor_count['PM'])
 
         code = {}
         for k in ['AM', 'PM']:
@@ -170,6 +177,7 @@ def get_free_slots_for_user(user_id, room_id, start_date, num_days):
             elif pending[k]:
                 code[k] = -2
             elif available[k]:
+                print(floor_count[k])
                 code[k] = floor_count[k]
             elif not available[k]:
                 code[k] = 0
@@ -179,6 +187,9 @@ def get_free_slots_for_user(user_id, room_id, start_date, num_days):
         checks.append({
             'when': when.strftime("%Y-%m-%d"),
             'code': [code['AM'], code['PM']],
+            'available': [available['AM'], available['PM']],
+            'approved': [approved['AM'], approved['PM']],
+            'pending': [pending['AM'], pending['PM']],
             'reasons': [reasons['AM'], reasons['PM']]
             })
 

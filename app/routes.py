@@ -130,12 +130,13 @@ def checks_to_calendar_days(checks):
             i += 1
         days.append({
             'day_number': day.day,
-            'when': day.strftime('%Y-%m-%d'),
+            'when': [day.strftime('%Y-%m-%d') + '-AM', day.strftime('%Y-%m-%d') + '-PM'],
             'outside': True if day.month != now.month else False,
-            'code': checks[i]['code'] if i > -1 else None,
-            'reasons': checks[i]['reasons'] if i > -1 else None,
-            'blocked': True if day.month != now.month else False
+            'code': checks[i]['code'] if pick_checks else None,
+            'reasons': checks[i]['reasons'] if pick_checks else None,
+            'blocked': False if pick_checks else True
         })
+        pick_checks = False
 
     return days
 
@@ -200,13 +201,17 @@ def choose_date(room_id):
     
     return render_template('choose_date.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days)
 
+from pprint import pprint
+
 @app.route('/calendar/<int:room_id>/', methods=['POST', 'GET'])
 def calendar(room_id):
     now = datetime.now()
     checks = get_free_slots_for_user(current_user.id, room_id, now, 7)
+    for check in checks:
+        pprint(checks)
     days = checks_to_calendar_days(checks)
-    for day in days:
-        print(day)
+    # for day in days:
+    #     print(day)
 
     return render_template('calendar.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days)
 
