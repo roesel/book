@@ -130,9 +130,9 @@ def count_to_int(count, max_count=POP_LIMIT_FLOOR, num_int=2):
             step = float(max_count) / num_int
             for i in range(num_int - 1):
                 if i <= count < i + step:
-                    return num_int - 1 - i
+                    return num_int - i
             if max_count - step <= count <= max_count:
-                return 0
+                return 1
             else:
                 return None
 
