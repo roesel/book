@@ -45,8 +45,12 @@
                                 <td>{{ booking['room']['name'] }}</td>
                                 <td>
                                     <!--<a class="text-danger" href="/cancel-booking/{{ booking['id'] }}/">Cancel</a>-->
-                                    <a type="button" class="btn btn-success btn-sm" href="/approve-booking/{{booking['id']}}/">Approve</a>
-                                    <a type="button" class="btn btn-danger btn-sm" href="/deny-booking/{{booking['id']}}/">Deny</a>
+                                    {% if booking['unique_request'] %}
+                                        <a type="button" class="btn btn-success btn-sm" href="/approve-booking/{{booking['id']}}/">Approve</a>
+                                    {% else %}
+                                        <a type="button" class="btn btn-success btn-sm disabled" href="">Approve</a>
+                                    {% endif %}
+                                        <a type="button" class="btn btn-danger btn-sm" href="/deny-booking/{{booking['id']}}/">Deny</a>
                                 </td>
                             </tr>
                         {% endfor %}

@@ -66,7 +66,7 @@ def dashboard():
 @app.route('/manage/')
 def manage():
    
-    bookings = get_pending_bookings()
+    bookings = get_pending_bookings_new()
     #try:
     #   bookings = get_pending_bookings(current_user.id)
     #except:
