@@ -223,15 +223,17 @@ def status(when):
 
     #get_plot_code
 
+    print(stats)
+
     labels_string = '","'.join(stats["labels"])
     
-    colors_string_am = '","'.join(stats["colors_am"])
-    data_am_string = ','.join([str(x) for x in stats["data_am"]])
-    label_string_am = stats["label_am"]
+    colors_string_am = '","'.join(stats["colors_AM"])
+    data_string_am = ','.join([str(x) for x in stats["data_AM"]])
+    label_string_am = stats["label_AM"]
     
-    colors_string_pm = '","'.join(stats["colors_pm"])
-    data_pm_string = ','.join([str(x) for x in stats["data_pm"]])
-    label_string_pm = stats["label_pm"]
+    colors_string_pm = '","'.join(stats["colors_PM"])
+    data_string_pm = ','.join([str(x) for x in stats["data_PM"]])
+    label_string_pm = stats["label_PM"]
     
     text_string = stats["text"]
 

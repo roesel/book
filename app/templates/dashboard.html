@@ -7,14 +7,14 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <h2>Profile</h2>
             <div class="alert alert-secondary" role="alert">
                 <h4>{{current_user.name}}</h4>
                 <h5>{{current_user.email}}</h5>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-8">
             <h2>My Bookings</h2>
             {% if not bookings %}
                 <p>You have no confirmed bookings.</p>

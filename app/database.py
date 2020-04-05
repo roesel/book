@@ -163,17 +163,17 @@ def get_free_slots_for_user(user_id, room_id, start_date, num_days):
         floor_count['AM'] = count_to_int(floor_count['AM'])
 
         code = {}
-        for k in ['AM', 'PM']
-        if approved[k]:
-            code[k] = -1
-        elif pending[k]:
-            code[k] = -2
-        elif available[k]:
-            code[k] = floor_count[k]
-        elif not available[k]:
-            code[k] = 0
-        else:
-            code[k] = -1000
+        for k in ['AM', 'PM']:
+            if approved[k]:
+                code[k] = -1
+            elif pending[k]:
+                code[k] = -2
+            elif available[k]:
+                code[k] = floor_count[k]
+            elif not available[k]:
+                code[k] = 0
+            else:
+                code[k] = -1000
             
         checks.append({
             'when': when.strftime("%Y-%m-%d"),
@@ -262,7 +262,7 @@ def stats_for_plot_buildings(when_day):
             plot_input['colors_AM'].append('#007bff')
         else:
             plot_input['colors_AM'].append('#dc3545')
-        building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel = stats_occupation(when = when_day + '_PM')
+    building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel = stats_occupation(when = when_day + '_PM')
     for b in building_occupation.keys():
         plot_input['labels'].append(b)
         plot_input['data_PM'].append(building_occupation[b])
