@@ -15,13 +15,17 @@
             <h2>Building status</h2>
         </div>
 
-        <div class="col-md-3 text-right">
-            <h2>{{pretty_month}}</h2>
-            <a href="/status/building/{{building}}/{{prev_month}}/">&#8592; Previous month</a> &middot; <a href="/status/building/{{building}}/{{next_month}}/">Next month &#8594;</a>
-        </div>
         <div class="col-md-2 text-right">
             <h2>{{building}}</h2>
         </div>
+
+        <div class="col-md-3 text-right">
+            <h2>{{pretty_month}}</h2>
+            <a href="/status/building/{{building}}/{{prev_month}}/">&#8592; Previous</a> &middot; 
+            <a href="/status/building/{{building}}/{{next_month}}/">Next &#8594;</a>
+        </div>
+        
+        
     </div>
     <div class="row">
         <div class="col-md-12">
