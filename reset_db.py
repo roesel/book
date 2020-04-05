@@ -167,10 +167,10 @@ for ri in rooms:
 
 bookings = [
     {"when":"2020-04-05", "who":1, "room":4, "status":"pending"},
-    {"when":"2020-04-07", "who":1, "room":4, "status":"confirmed"},
-    {"when":"2020-04-05", "who":2, "room":7, "status":"declined"},
-    {"when":"2020-04-05", "who":1, "room":3, "status":"confirmed"},
-    {"when":"2020-04-06", "who":3, "room":4, "status":"declined"},
+    {"when":"2020-04-07", "who":1, "room":4, "status":"approved"},
+    {"when":"2020-04-05", "who":2, "room":7, "status":"denied"},
+    {"when":"2020-04-05", "who":1, "room":3, "status":"approved"},
+    {"when":"2020-04-06", "who":3, "room":4, "status":"denied"},
     {"when":"2020-04-05", "who":4, "room":7, "status":"pending"},
     {"when":"2020-04-05", "who":4, "room":2, "status":"pending"},
 ]
