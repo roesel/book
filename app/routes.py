@@ -159,18 +159,28 @@ def status(when):
         ]
         },
         options: {
-        legend: { display: false },
-        title: {
-            display: true,
-            text: "'''+text_string+'''"
-        }
-        },
-        options: {
+            title: {
+                display: true,
+                text: "'''+text_string+'''"
+            },
+            legend: {
+                display: false,
+            },
             scales: {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
                         stepSize: 1
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Number of people (-)'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Building'
                     }
                 }]
             }
