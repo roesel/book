@@ -292,7 +292,7 @@ def stats_for_plot_time(building, month):
     plot_input['data_PM'] = []
     plot_input['colors_PM'] = []
     plot_input['label_PM'] = 'After lunch, PM'
-    plot_input['text'] = 'Load of EPFL campus per building'
+    plot_input['text'] = 'Load of the building during the month'
     plot_input['under_text'] = 'Date'
     plot_input['label'] = 'Rooms booked in this building'
     for day in range(31):
