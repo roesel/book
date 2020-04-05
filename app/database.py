@@ -36,9 +36,20 @@ def get_bookings_of_user(user_id):
 
 def get_bookings_of_room(room_name):
     query = Booking.select().join(Room).where(Room.name==room_name)
-    room_bookings = [model_to_ict(c) for c in query]
+    room_bookings = [model_to_dict(c) for c in query]
     return room_bookings
 
+
+def get_pending_bookings(sort_by='booking_id'):
+    query = Booking.select().where(Booking.status == 'pending')
+    
+    if sort_by == 'when':
+        query_sorted = query.order_by(Booking.when)
+    else:
+        query_sorted = query
+    
+    pending_bookings = [model_to_dict(c) for c in query_sorted]
+    return pending_bookings
 
 def delete_booking(id):
     query = Booking.delete().where(Booking.id == id)
