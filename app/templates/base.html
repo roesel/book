@@ -27,6 +27,7 @@
       <nav class="my-2 my-md-0 mr-md-3">
         <a class="p-2 text-dark" href="{{ url_for('manage') }}">Manage</a>
         <a class="p-2 text-dark" href="{{ url_for('status') }}">Status</a>
+        <a class="p-2 text-dark" href="{{ url_for('status2') }}">Status 2</a>
         {% if not current_user.is_anonymous %}
           <a class="p-2 text-dark" href="{{ url_for('dashboard') }}">My bookings</a>
           <a class="p-2 text-dark" href="{{ url_for('book') }}">Make a booking</a>

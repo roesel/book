@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block script %}
+    {{ plot_code | safe}}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <h2>Status</h2>
+        </div>
+
+        <div class="col-md-6 text-right">
+            <h2>{{building}}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <canvas id="bar-chart" width="600" height="200"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
