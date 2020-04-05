@@ -257,7 +257,7 @@ def stats_for_plot_buildings(when_day):
     plot_input['label_PM'] = 'Rooms booked after lunch'
     building_occupation_AM, floor_occupation_AM, building_occupation_rel_AM, floor_occupation_rel_AM = stats_occupation(when = when_day + '-AM')
     building_occupation_PM, floor_occupation_PM, building_occupation_rel_PM, floor_occupation_rel_PM = stats_occupation(when = when_day + '-PM')
-    for b in building_occupation.keys():
+    for b in building_occupation_AM.keys():
         plot_input['labels'].append(b)
         plot_input['data_AM'].append(building_occupation_AM[b])
         plot_input['data_PM'].append(building_occupation_PM[b])
