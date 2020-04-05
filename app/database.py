@@ -31,7 +31,20 @@ def deny_booking(booking_id):
     requested_booking.save()
     return True
 
+
 def get_bookings_of_user(user_id):
+    query = Booking.select().where(Booking.who == user_id)
+    user_bookings = [model_to_dict(c) for c in query]
+    for b in user_bookings:
+        booking = Booking.get(Booking.id == b['id'])
+        room = Room.get(Room.id == booking.room)
+        same_floor_occupation = Booking.select().join(Room).where(Booking.when == booking.when, Room.building == room.building, Room.floor == room.floor).count()
+        same_floor_occupation_rel = same_floor_occupation/POP_LIMIT_FLOOR
+        b['value_abs'] = same_floor_occupation
+        b['value_rel'] = same_floor_occupation_rel
+    return user_bookings
+
+def get_bookings_of_user_old(user_id):
     query = Booking.select().where(Booking.who == user_id)
     user_bookings = [model_to_dict(c) for c in query]
     for b in user_bookings:

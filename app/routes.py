@@ -56,6 +56,7 @@ def logout():
 def dashboard():
     # try:
     bookings = get_bookings_of_user(current_user.id)
+    print(bookings)
     # except:
     #    return "Could not retrieve your bookings"
     return render_template('dashboard.html', bookings=bookings, user_name=current_user.name, prettify_when=prettify_when)
