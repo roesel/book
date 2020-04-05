@@ -82,12 +82,14 @@ def stats_occupation(when):
     floor_occupation_rel = {}
     building_occupation = {}
     building_occupation_rel = {}
-    buildings_of_the_campus = Room.select(Room.building).group_by(Room.building)
+    rows = Room.select(Room.building).group_by(Room.building)
+    buildings_of_the_campus = [row.building for row in rows]
     for building in buildings_of_the_campus:
         floor_occupation[building] = {}
         floor_occupation_rel[building] = {}
         rooms_of_the_building = Room.select().where(Room.building == building)
-        floors_of_the_building = rooms_of_the_building.select(Room.floor).group_by(Room.floor)
+        rows = Room.select(Room.floor).where(Room.building == building).group_by(Room.floor)
+        floors_of_the_building = [row.floor for row in rows]
         for floor in floors_of_the_building:
             floor_occupation[building][floor] = 0
             floor_occupation_rel[building][floor] = 0
@@ -95,15 +97,6 @@ def stats_occupation(when):
     for booking in day_occupation:
         room_id = booking.room
         room = Room.get(Room.id == room_id)
-        #if room.building in floor_occupation:
-        #    if room.floor in floor_occupation[room.building]:
-        #        floor_occupation[room.building][room.floor] += 1
-        #    else:
-        #        floor_occupation[room.building][room.floor] = 1
-        #else:
-        #    floor_occupation[room.building] = {}
-        #    floor_occupation[room.building][room.floor] = 1
-        #    floor_occupation_rel[room.building]= {}
         floor_occupation[room.building][room.floor] += 1
         floor_occupation_rel[room.building][room.floor] = floor_occupation[room.building][room.floor]/POP_LIMIT_FLOOR
     for building in floor_occupation:
@@ -138,10 +131,22 @@ def stats_for_plot_building(when):
     return plot_input
 
 def stats_for_plot_time(building, month):
+    plot_input = {}
+    plot_input['labels'] = []
+    plot_input['data_AM'] = []
+    plot_input['colors_AM'] = []
+    plot_input['label_AM'] = 'Before lunch, AM'
+    plot_input['data_PM'] = []
+    plot_input['colors_PM'] = []
+    plot_input['label_PM'] = 'After lunch, PM'
+    plot_input['text'] = 'Load of EPFL campus per building'
+    plot_input['label'] = 'Rooms booked in this building'
     for day in range(31):
-        day_string = '2020-{:02d}-{:02d}'.format(month,day)
+        day_string = '2020-{:02d}-{:02d}'.format(month,day+1)
+        print(day_string)
         plot_input['labels'].append(day_string)
         building_occupation_AM, floor_occupation_AM, building_occupation_rel_AM, floor_occupation_rel_AM = stats_occupation(when = day_string + '-AM')
+        print(building_occupation_AM.keys())
         plot_input['data_AM'].append(building_occupation_AM[building])
         if building_occupation_rel_AM[building] < 1:
             plot_input['colors_AM'].append('007bff')
