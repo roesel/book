@@ -175,17 +175,17 @@ def stats_for_plot_building(when):
 
 def stats_for_plot_buildings(when_day):
     plot_input = {}
-    plot_input['labels_AM'] = []
+    plot_input['labels'] = []
     plot_input['data_AM'] = []
     plot_input['colors_AM'] = []
-    plot_input['labels_PM'] = []
     plot_input['data_PM'] = []
     plot_input['colors_PM'] = []
     plot_input['text'] = 'Load of EPFL campus per building'
-    plot_input['label'] = 'Rooms booked in this building'
+    plot_input['label_AM'] = 'Rooms booked before lunch'
+    plot_input['label_PM'] = 'Rooms booked after lunch'
     building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel = stats_occupation(when = when_day + '_AM')
     for b in building_occupation.keys():
-        plot_input['labels_AM'].append(b)
+        plot_input['labels'].append(b)
         plot_input['data_AM'].append(building_occupation[b])
         if building_occupation_rel[b] < 1:
             plot_input['colors_AM'].append('#007bff')
@@ -193,7 +193,7 @@ def stats_for_plot_buildings(when_day):
             plot_input['colors_AM'].append('#dc3545')
         building_occupation, floor_occupation, building_occupation_rel, floor_occupation_rel = stats_occupation(when = when_day + '_PM')
     for b in building_occupation.keys():
-        plot_input['labels_PM'].append(b)
+        plot_input['labels'].append(b)
         plot_input['data_PM'].append(building_occupation[b])
         if building_occupation_rel[b] < 1:
             plot_input['colors_PM'].append('#007bff')
