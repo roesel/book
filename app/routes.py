@@ -326,11 +326,12 @@ def status2(building, month):
     label_string_pm = stats["label_PM"]
     
     text_string = stats["text"]
+    x_axis_string = stats["under_text"]
 
     plot_code = '''<script>
     // Bar chart
     new Chart(document.getElementById("bar-chart"), {
-        type: 'line',
+        type: 'bar',
         data: {
         labels: ["'''+labels_string+'''"],
         datasets: [
@@ -368,7 +369,7 @@ def status2(building, month):
                 xAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: 'Building'
+                        labelString: "'''+x_axis_string+'''"
                     }
                 }]
             }
