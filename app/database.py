@@ -112,6 +112,10 @@ def get_free_slots(room_id, start_date, num_days):
 
     return checks
 
+def get_limits():
+    limits = {'building':POP_LIMIT_BUILDING, 'floor':POP_LIMIT_FLOOR, 'room':POP_LIMIT_ROOM}
+    return limits
+
 def stats_occupation(when):
     floor_occupation = {}
     floor_occupation_rel = {}
