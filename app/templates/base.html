@@ -6,11 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    {% if title %}
-      <title>{{ title }} - LabBook</title>
-      {% else %}
-      <title>Welcome to LabBook</title>
-    {% endif %}
+    {% block title %}{% endblock %}
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
