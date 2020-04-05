@@ -107,7 +107,8 @@ def checks_to_calendar_days(checks):
             'when': '2020-03-{:02d}'.format(i),
             'outside': False,
             'available': randint(-1, 2),
-            'blocked': True
+            'blocked': False,
+            'reasons': [bool(randint(0, 1)) for i in range(3)]
         }
         for i in range(1, 31)
     ]
@@ -129,7 +130,7 @@ def checks_to_calendar_days(checks):
     #     days.append({'day_number':i+1, 'when':'2020-04-{:02d}'.format(i+1), 'outside':False, 'available':False, 'blocked':True})
     # for j in range(2):
     #     days.append({'day_number':j+1, 'when':'2020-05-{:02d}'.format(j+1), 'outside':True, 'available':False, 'blocked':True})
-    # I will go into algorithm hell for this :(
+    # # I will go into algorithm hell for this :(
     # for d in days:
     #     for c in checks:
     #         if d["when"]==c["when"]:
@@ -154,6 +155,8 @@ def calendar(room_id):
     now = datetime.now()
     checks = get_free_slots(room_id, now, 7)
     days = checks_to_calendar_days(checks)
+    for day in days:
+        print(day)
 
     return render_template('calendar.html', checks=checks, user_name=current_user.name, room_id=room_id, days=days)
 
