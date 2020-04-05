@@ -24,7 +24,7 @@ Manage bookings
                     <tbody>
                         {% for booking in bookings %}
                             <tr>
-                                <td>{{prettify_when(booking['when'])}}</td>
+                                <td>{{ prettify_when(booking['when']) }}</td>
                                 <td>{{ booking['who']['name'] }}</td>
                                 <td>{{ booking['room']['name'] }}</td>
                                 <td>

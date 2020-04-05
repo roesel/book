@@ -319,6 +319,90 @@ def status(when):
                             limits=limits)
 
 
+@app.route('/status2/', defaults={'building': 'BM', 'month':'4'})
+@app.route('/status2/<building>/<month>/')
+def status2(building, month):
+    
+    stats = stats_for_plot_time(building, int(month))
+
+    print(stats)
+
+    labels_string = '","'.join(stats["labels"])
+    
+    colors_string_am = '","'.join(stats["colors_AM"])
+    data_string_am = ','.join([str(x) for x in stats["data_AM"]])
+    label_string_am = stats["label_AM"]
+    
+    colors_string_pm = '","'.join(stats["colors_PM"])
+    data_string_pm = ','.join([str(x) for x in stats["data_PM"]])
+    label_string_pm = stats["label_PM"]
+    
+    text_string = stats["text"]
+    x_axis_string = stats["under_text"]
+
+    plot_code = '''<script>
+    // Bar chart
+    new Chart(document.getElementById("bar-chart"), {
+        type: 'bar',
+        data: {
+        labels: ["'''+labels_string+'''"],
+        datasets: [
+            {
+            label: "'''+label_string_am+'''",
+            backgroundColor: ["'''+colors_string_am+'''"],
+            data: ['''+data_string_am+''']
+            },
+            {
+            label: "'''+label_string_pm+'''",
+            backgroundColor: ["'''+colors_string_pm+'''"],
+            data: ['''+data_string_pm+''']
+            }
+        ]
+        },
+        options: {
+            title: {
+                display: true,
+                text: "'''+text_string+'''"
+            },
+            legend: {
+                display: false,
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Number of people (-)'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: "'''+x_axis_string+'''"
+                    }
+                }]
+            }
+        }
+    });
+    </script>'''
+    
+    # Date loginc for next/previous
+    #current_date = datetime.strptime(when, '%Y-%m-%d')
+    #next_date = current_date + timedelta(days=1)
+    #prev_date = current_date + timedelta(days=-1)
+    #next_when = next_date.strftime('%Y-%m-%d')
+    #prev_when = prev_date.strftime('%Y-%m-%d')
+    #pretty_date = prettify_date(when)
+    
+    # Limits
+    #limits = get_limits()
+
+    return render_template('status2.html', stats=stats, plot_code=plot_code, building=building)
+
+
 @app.route('/team_info/')
 def team_info():
  
