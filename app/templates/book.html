@@ -26,7 +26,6 @@ $(document).ready(function () {
     <div class="row">
         <div class="col-md-4">
             <h4>Choose a room:</h4>
-
             <div class="form">
                 <form action="/book/" method="POST">
                     <div class="form-group">
@@ -41,6 +40,48 @@ $(document).ready(function () {
                     </div>-->
                 </form>
             </div>
+            <h2>Help</h2>
+
+
+                <div class="calendar-example shadow p-2">
+
+                        <ol class="day-names list-unstyled">
+                            <li class="font-weight-bold text-uppercase text-center"></li>
+                            <li class="font-weight-bold text-uppercase text-center">Mon</li>
+                            <li class="font-weight-bold text-uppercase text-center">Thu</li>
+                        </ol>
+            
+                        <ol class="days list-unstyled text-center">
+                            <li>
+                                <div class="date">⠀</div>
+                                <div class="event text-dark font-weight-bold">Morning →</div>
+                                <div class="event text-dark font-weight-bold">Afternoon →</div>
+                            </li>
+                            <li>
+                                <div class="date">1</div>
+                                <div class="event bg-success">&lt; 33% filled</div>
+                                <div class="event bg-warning">33-66% filled</div>
+                                <!-- <a href='#'><div class="event" style="background-color: #e4606d;">Book</div></a>
+                                        
+                                <p class="event text-danger font-weight-bold">Full building</p>
+                                <p class="event text-danger font-weight-bold">Full floor</p>    
+                                <p class="event text-danger font-weight-bold">Full room</p>       
+            
+                                <p class="event text-success font-weight-bold">Approved</p>  
+                                <p class="event text-primary font-weight-bold">Pending</p>  
+                                <p class="event text-secondary font-weight-bold">Not defined</p> -->
+                            </li>
+                            <li>
+                                <div class="date">2</div>
+                                <div class="event" style="background-color: #e4606d;">&gt; 66% filled</div>
+                                <p class="event text-danger font-weight-bold">Full floor</p>
+                            </li>
+                        </ol>
+
+                    
+    
+                </div>
+
         </div>
         <div class="col-md-8 text-center" id="calendar_content">
             Future calendar content.

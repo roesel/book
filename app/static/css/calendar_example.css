@@ -1,0 +1,89 @@
+/*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+.clearfix::after,
+.calendar-example ol::after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+/* ================
+calendar-example Styling */
+.calendar-example {
+  border-radius: 10px;
+}
+
+.month {
+  font-size: 2rem;
+}
+
+@media (min-width: 992px) {
+  .month {
+    font-size: 3.5rem;
+  }
+}
+
+.calendar-example ol li {
+  float: left;
+  width: 33.333%;
+}
+
+.calendar-example .day-names {
+  border-bottom: 1px solid #eee;
+}
+
+.calendar-example .day-names li {
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-example .days li {
+  border-bottom: 1px solid #eee;
+  min-height: 8rem;
+}
+
+.calendar-example .days li .date {
+  margin: 0.5rem 0;
+}
+
+.calendar-example .days li .event {
+  font-size: 0.75rem;
+  padding: 0.4rem;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 4rem;
+  margin-bottom: 1px;
+}
+
+.calendar-example .days li .event.span-2 {
+  width: 200%;
+}
+
+.calendar-example .days li .event.begin {
+  border-radius: 1rem 0 0 1rem;
+}
+
+.calendar-example .days li .event.end {
+  border-radius: 0 1rem 1rem 0;
+}
+
+.calendar-example .days li .event.clear {
+  background: none;
+}
+
+.calendar-example .days li:nth-child(n+29) {
+  border-bottom: none;
+}
+
+.calendar-example .days li.outside .date {
+  color: #ddd;
+}
