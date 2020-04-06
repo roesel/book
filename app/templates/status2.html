@@ -23,7 +23,7 @@
 
         <div class="col-md-2 text-right">
             <h2>
-                <select id="building_select"  onchange="updateBuildingSelection()">
+                <select id="building_select" class="form-control text-center" onchange="updateBuildingSelection()">
                 {% for b in buildings %}
                     {% if building==b %}
                         <option value="/status/building/{{b}}/{{month}}/" selected>{{b}}</option>
