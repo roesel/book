@@ -358,11 +358,11 @@ def stats_for_plot_time_floor(building, floor, month):
     plot_input['colors_PM'] = []
     plot_input['label_PM'] = 'Evening'
     plot_input['text'] = 'Load of {:01d} floor during the month'.format(floor)
-    plot_input['under_text'] = 'Date'
+    plot_input['under_text'] = 'Day'
     plot_input['label'] = 'Rooms booked on {:01d} floor'.format(floor)
-    for day in range(31):
+    for day in range(30):
         day_string = '2020-{:02d}-{:02d}'.format(month,day+1)
-        plot_input['labels'].append(day_string)
+        plot_input['labels'].append('{:d}'.format(day+1))
         building_occupation_AM, floor_occupation_AM, building_occupation_rel_AM, floor_occupation_rel_AM = stats_occupation(when = day_string + '-AM')        
         plot_input['data_AM'].append(floor_occupation_AM[building][floor])
         if floor_occupation_rel_AM[building][floor] < 1:
