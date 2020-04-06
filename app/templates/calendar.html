@@ -24,8 +24,15 @@
                     <li class="outside">
                 {% endif %}
                 
-                <div class="date">{{d["day_number"]}}</div>
-                {% if not d["blocked"] %}
+                {% if d["day_number"]==6 %}
+                    <div class="date">
+                        <span class="badge badge-pill badge-primary" style="font-size:100%;font-weight:normal;">{{d["day_number"]}}</span>
+                    </div>
+                {% else %}
+                    <div class="date">{{d["day_number"]}}</div>
+                {% endif %}
+
+                    {% if not d["blocked"] %}
 
                     {% for i in range(2) %}
                         {% if d["code"][i] == 3 %}
