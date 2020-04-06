@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block script %}
+<script>
+    document.getElementById("building_select").addEventListener("change", updateBuildingSelection);
+</script>
+
     {{ plot_code | safe}}
 
     {% for f in floor_plots %}
@@ -22,7 +26,7 @@
 
         <div class="col-md-2 text-right">
             <h2>
-                <select id="building_select" class="form-control text-center" onchange="updateBuildingSelection()">
+                <select id="building_select" class="form-control text-center">
                 {% for b in buildings %}
                     {% if building==b %}
                         <option value="/status/building/{{b}}/{{month}}/" selected>{{b}}</option>
