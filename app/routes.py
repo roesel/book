@@ -255,7 +255,7 @@ def make_booking(room_id, when):
     _ = create_booking(current_user.id, when, room_id)
     return redirect(f'/dashboard/')
 
-@app.route('/status/', defaults={'when': '2020-04-05'})
+@app.route('/status/', defaults={'when': '2020-04-06'})
 @app.route('/status/<when>/')
 def status(when):
     
