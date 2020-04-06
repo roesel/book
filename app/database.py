@@ -162,7 +162,7 @@ def check_bookings_of_user_room_when(user_id, room_id, when, status='approved'):
     assert count in [0, 1]
     return bool(count)
 
-def count_to_int(count, max_count=POP_LIMIT_FLOOR, num_int=3):
+def count_to_int(count, max_count=POP_LIMIT_FLOOR, num_int=2):
             step = float(max_count) / num_int
             for i in range(num_int - 1):
                 if i <= count < i + step:
