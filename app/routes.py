@@ -81,7 +81,7 @@ def manage():
 @app.route('/deny-booking/<int:id>/')
 def deny_booking_id(id):
     params = get_booking_text(id)
-    flash(f'The booking of the room {params[0]} on {params[1]} for {params[2]} was denied.') 
+    flash('The booking of the room {} on {} for {} was denied.'.format(params[0], params[1], params[2]))
     # TODO: DB: Check for permission (if the current user is allowed to remove this booking)
     success = deny_booking(id)
     if success:
@@ -91,7 +91,7 @@ def deny_booking_id(id):
 @app.route('/approve-booking/<int:id>/')
 def approve_booking_id(id):
     params = get_booking_text(id)
-    flash(f'The booking of the room {params[0]} on {params[1]} for {params[2]} was approved.') 
+    flash('The booking of the room {} on {} for {} was approved.'.format(params[0], params[1], params[2])) 
     # TODO: DB: Check for permission (if the current user is allowed to remove this booking)
     success = approve_booking(id)
     if success:
@@ -101,7 +101,7 @@ def approve_booking_id(id):
 @app.route('/cancel-booking/<int:id>/')
 def cancel_booking(id):
     params = get_booking_text(id)
-    flash(f'The booking of the room {params[0]} on {params[1]} for {params[2]} was canceled.') 
+    flash('The booking of the room {} on {} for {} was canceled.'.format(params[0], params[1], params[2])) 
     # TODO: DB: Check for permission (if the current user is allowed to remove this booking)
     try:
         num_of_deleted_rows = delete_booking(id)
@@ -115,7 +115,7 @@ def book():
     if request.method == 'POST':
         book_room_id = int(request.form.get('rooms'))
         print('Got room ids')
-        return redirect(f'/choose-date/{book_room_id}/')
+        return redirect('/choose-date/{}/'.format(book_room_id))
     else:
         try:
             rooms = get_accessible_rooms(current_user.id)
@@ -253,7 +253,7 @@ def calendar(room_id):
 @app.route('/make-booking/<int:room_id>/<when>/', methods=['POST', 'GET'])
 def make_booking(room_id, when):
     _ = create_booking(current_user.id, when, room_id)
-    return redirect(f'/dashboard/')
+    return redirect('/dashboard/')
 
 @app.route('/status/', defaults={'when': '2020-04-06'})
 @app.route('/status/<when>/')
