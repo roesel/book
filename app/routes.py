@@ -259,6 +259,8 @@ def status(when):
 
     #get_plot_code
 
+    upper_limit = get_limits()["building"]
+
     print(stats)
 
     labels_string = '","'.join(stats["labels"])
@@ -304,7 +306,8 @@ def status(when):
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize: 1
+                        stepSize: 1,
+                        max: '''+str(upper_limit)+'''
                     },
                     scaleLabel: {
                         display: true,
@@ -337,7 +340,8 @@ def status(when):
                             pretty_date=pretty_date, prev_when=prev_when, next_when=next_when,
                             limits=limits)
 
-def generate_plot_code_2(stats, floor=""):
+def generate_plot_code_2(stats, upper_limit, floor=""):
+
     labels_string = '","'.join(stats["labels"])
     
     colors_string_am = '","'.join(stats["colors_AM"])
@@ -388,7 +392,8 @@ def generate_plot_code_2(stats, floor=""):
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize: 1
+                        stepSize: 1,
+                        max: '''+str(upper_limit)+'''
                     },
                     scaleLabel: {
                         display: true,
@@ -424,14 +429,17 @@ def status2(building, month):
 
     print(stats)
 
-    plot_code = generate_plot_code_2(stats, floor="")
+
+    lims = get_limits()
+
+    plot_code = generate_plot_code_2(stats, lims["building"], floor="")
     
     floor_plots = []
     floor_data = stats_for_plot_time_floors(building, int(month))
     floors = [i for i in range(len(floor_data))]
     for i in range(len(floor_data)):
         f = floor_data[i]
-        plot_code_b = generate_plot_code_2(f, floor=str(i))
+        plot_code_b = generate_plot_code_2(f, lims["floor"], floor=str(i))
         floor_plots.append(plot_code_b)
 
     # Limits
