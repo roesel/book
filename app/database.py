@@ -250,7 +250,7 @@ def stats_occupation(when):
         for floor in floors_of_the_building:
             floor_occupation[building][floor] = 0
             floor_occupation_rel[building][floor] = 0
-    day_occupation = Booking.select().where(Booking.when == when)
+    day_occupation = Booking.select().where(Booking.when == when, Booking.status == 'approved')
     for booking in day_occupation:
         room_id = booking.room
         room = Room.get(Room.id == room_id)
