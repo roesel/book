@@ -14,10 +14,10 @@ from app.models import User, Room, Booking
 
 # Make users
 users = [
-    {"name":"David R.", "email":"david.roesel@epfl.ch", "password-plain":"horsefish"},
-    {"name":"Maksim E.", "email":"maksim.eremchev@epfl.ch", "password-plain":"catmouse"},
-    {"name":"Olesia A.", "email":"olesia.altunina@epfl.ch", "password-plain":"ponydog"},
-    {"name":"Serhii K.", "email":"sergey.kulik@epfl.ch", "password-plain":"birdsnake"},
+    {"name":"Hecarim Sion", "email":"hecarim.sion@epfl.ch", "password-plain":"horsefish"},
+    {"name":"Jhin Ornn", "email":"jhin.ornn@epfl.ch", "password-plain":"catmouse"},
+    {"name":"Akali Braum", "email":"akali.braum@epfl.ch", "password-plain":"ponydog"},
+    {"name":"Brand Zac", "email":"brand.zac@epfl.ch", "password-plain":"birdsnake"},
 ]
 
 for user in users:
@@ -159,21 +159,60 @@ for ri in rooms:
     r = Room(name=ri[0], floor=ri[1], building=ri[2])
     try:
         r.save()
-        print("Success!")
+        #print("Success!")
     except peewee.IntegrityError:
         pass
 
+b2f = {'BM':5, 'BP':5, 'CH':5, 'SV':3, 'ME':3}
+
+def find_rooms(building, floor):
+    out = []
+    for r in rooms:
+        if ((r[1] == floor) and (r[2] == building)):
+            out.append(rooms.index(r)+1)
+    return out
+
+from datetime import datetime, timedelta
+import random
+                
+bookings = []
+start_date = datetime.now()
+num_days = 14
+r = len(rooms)
+building_limit = 5
+in_building = {'BM':0, 'BP':0, 'CH':0, 'SV':0, 'ME':0}
+for offset in range(num_days):  # For each day in list 
+    for time in ['AM', 'PM']:
+        when_dt = start_date + timedelta(days=offset)
+        when = when_dt.strftime('%Y-%m-%d')+"-"+time
+        who = 1
+        status = "approved"
+        in_building = {'BM':0, 'BP':0, 'CH':0, 'SV':0, 'ME':0}
+        for building in b2f.keys():
+            for floor in range(1, b2f[building]+1):
+                avail_rooms = find_rooms(building, floor)
+                rn = random.randint(1,3)
+                for room in avail_rooms[0:rn]:
+                    rn2 = random.randint(1,3)
+                    if in_building[building] < building_limit and rn2==1:
+                        bookings.append({"when":when, "who":who, "room":room, "status":status})
+                        in_building[building] += 1
+
+
+
+#print(bookings)
+
 # Make demo bookings
-bookings = [
-    {"when":"2020-04-05-AM", "who":1, "room":1, "status":"approved"},
-    {"when":"2020-04-05-AM", "who":3, "room":1, "status":"approved"},
-    {"when":"2020-04-05-AM", "who":4, "room":10, "status":"approved"},
-    {"when":"2020-04-08-AM", "who":3, "room":2, "status":"approved"},
-    {"when":"2020-04-05-PM", "who":1, "room":35, "status":"approved"},
-    {"when":"2020-04-06-PM", "who":3, "room":36, "status":"denied"},
-    {"when":"2020-04-05-PM", "who":4, "room":37, "status":"pending"},
-    {"when":"2020-04-05-PM", "who":4, "room":40, "status":"pending"},
-]
+#bookings = [
+#    {"when":"2020-04-05-AM", "who":1, "room":1, "status":"approved"},
+    #{"when":"2020-04-05-AM", "who":3, "room":1, "status":"approved"},
+    #{"when":"2020-04-05-AM", "who":4, "room":10, "status":"approved"},
+    #{"when":"2020-04-08-AM", "who":3, "room":2, "status":"approved"},
+    #{"when":"2020-04-05-PM", "who":1, "room":35, "status":"approved"},
+    #{"when":"2020-04-06-PM", "who":3, "room":36, "status":"denied"},
+    #{"when":"2020-04-05-PM", "who":4, "room":37, "status":"pending"},
+    #{"when":"2020-04-05-PM", "who":4, "room":40, "status":"pending"},
+#]
 
 for bk in bookings:
     b = Booking(when=bk["when"], who=bk["who"], room=bk["room"], status=bk["status"])
