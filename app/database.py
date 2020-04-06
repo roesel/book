@@ -381,7 +381,7 @@ def stats_for_plot_time_floors(building, month):
     plot_input_pack = ()
     rows = Room.select(Room.floor).where(Room.building == building).group_by(Room.floor)
     floors_of_the_building = [row.floor for row in rows]
-    for floors in floors_of_the_building:
+    for floor in floors_of_the_building:
         stats_for_plot_time_floor(building = building, floor = floor, month = month)
         plot_input_pack.append(stats_for_plot_time_floor(building = building, floor = floor, month = month))
     return plot_input_pack
