@@ -23,8 +23,4 @@ function updateRoomSelection() {
   fetchAsync("/calendar/", value);
 }
 
-function updateBuildingSelection() {
-  var value = document.getElementById("building_select").value;
-  console.log(value);
-  window.location = value;
-}
+

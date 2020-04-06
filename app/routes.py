@@ -121,6 +121,10 @@ def book():
             rooms = get_accessible_rooms(current_user.id)
         except:
             return "Could not retireve rooms"
+
+        for room in rooms:
+            room["full_name"] = room_to_address(room["name"])
+
         return render_template('book.html', rooms=rooms, user_name=current_user.name)
 
 from random import randint
