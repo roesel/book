@@ -25,30 +25,13 @@ $(document).ready(function () {
     </div>
     <div class="row">
         <div class="col-md-4">
-            <h4>Choose a room:</h4>
-            <div class="form">
-                <form action="/book/" method="POST">
-                    <div class="form-group">
-                        <select class="form-control" id="room" name="rooms" onchange="updateRoomSelection()">
-                            {% for room in rooms %}
-                                <option value="{{ room['id'] }}">{{ room['name'] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <!--<div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="View available dates">
-                    </div>-->
-                </form>
-            </div>
-            <h4>Help</h4>
-
-
-                <div class="calendar-example shadow p-2">
+            <h4>Guide</h4>
+                <div class="calendar-example shadow p-2 mb-4">
 
                         <ol class="day-names list-unstyled">
                             <li class="font-weight-bold text-uppercase text-center"></li>
                             <li class="font-weight-bold text-uppercase text-center">Mon</li>
-                            <li class="font-weight-bold text-uppercase text-center">Thu</li>
+                            <li class="font-weight-bold text-uppercase text-center">Tue</li>
                         </ol>
             
                         <ol class="days list-unstyled text-center">
@@ -60,7 +43,7 @@ $(document).ready(function () {
                             <li>
                                 <div class="date">1</div>
                                 <div class="event bg-success">&lt; 33% filled</div>
-                                <div class="event bg-warning">33-66% filled</div>
+                                <div class="event" style="background-color: #ff8400;">33-66% filled</div>
                                 <!-- <a href='#'><div class="event" style="background-color: #e4606d;">Book</div></a>
                                         
                                 <p class="event text-danger font-weight-bold">Full building</p>
@@ -82,6 +65,21 @@ $(document).ready(function () {
     
                 </div>
 
+            <h4>Choose a room:</h4>
+            <div class="form">
+                <form action="/book/" method="POST">
+                    <div class="form-group">
+                        <select class="form-control" id="room" name="rooms" onchange="updateRoomSelection()">
+                            {% for room in rooms %}
+                                <option value="{{ room['id'] }}">{{ room['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!--<div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="View available dates">
+                    </div>-->
+                </form>
+            </div>
         </div>
         <div class="col-md-8 text-center" id="calendar_content">
             Future calendar content.
