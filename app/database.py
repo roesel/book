@@ -386,6 +386,11 @@ def stats_for_plot_time_floors(building, month):
         plot_input_pack.append(stats_for_plot_time_floor(building = building, floor = floor, month = month))
     return plot_input_pack
 
+def list_buildings():
+    rows = Room.select(Room.building).group_by(Room.building)
+    buildings_of_the_campus = [row.building for row in rows]
+    return buildings_of_the_campus
+
 def prettify_date(date):
     """
     Input:
