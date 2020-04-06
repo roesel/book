@@ -6,7 +6,16 @@
 
 {% block script %}
 <script>
+    
+
+$(document).ready(function(){
+    function updateBuildingSelection() {
+    var value = document.getElementById("building_select").value;
+    console.log(value);
+    window.location = value;
+    }
     document.getElementById("building_select").addEventListener("change", updateBuildingSelection);
+});
 </script>
 
     {{ plot_code | safe}}
