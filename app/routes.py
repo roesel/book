@@ -337,25 +337,7 @@ def status(when):
                             pretty_date=pretty_date, prev_when=prev_when, next_when=next_when,
                             limits=limits)
 
-
-@app.route('/status/building/', defaults={'building': 'BM', 'month':'4'})
-@app.route('/status/building/<building>/<month>/')
-def status2(building, month):
-    
-    stats = stats_for_plot_time(building, int(month))
-    date_month = datetime(2020, int(month), 1)
-    pretty_month = date_month.strftime('%B %Y')
-
-    ## Date loginc for next/previous
-    #next_date = date_month + timedelta(days=35)
-    #prev_date = date_month + timedelta(days=-35)
-    #next_month = next_date.strftime('%B %Y')
-    #prev_month = prev_date.strftime('%B %Y')
-    #pretty_date = prettify_date(when)
-
-
-    print(stats)
-
+def generate_plot_code_2(stats, floor=""):
     labels_string = '","'.join(stats["labels"])
     
     colors_string_am = '","'.join(stats["colors_AM"])
@@ -369,9 +351,15 @@ def status2(building, month):
     text_string = stats["text"]
     x_axis_string = stats["under_text"]
 
+    bar_id = "bar-chart"
+    if floor:
+        bar_id += "-"+floor
+
+    print(bar_id)
+
     plot_code = '''<script>
     // Bar chart
-    new Chart(document.getElementById("bar-chart"), {
+    new Chart(document.getElementById("'''+bar_id+'''"), {
         type: 'bar',
         data: {
         labels: ["'''+labels_string+'''"],
@@ -417,17 +405,48 @@ def status2(building, month):
         }
     });
     </script>'''
+
+    return plot_code
+
+@app.route('/status/building/', defaults={'building': 'BM', 'month':'4'})
+@app.route('/status/building/<building>/<month>/')
+def status2(building, month):
+    stats = stats_for_plot_time(building, int(month))
+    date_month = datetime(2020, int(month), 1)
+    pretty_month = date_month.strftime('%B %Y')
+
+    ## Date loginc for next/previous
+    #next_date = date_month + timedelta(days=35)
+    #prev_date = date_month + timedelta(days=-35)
+    #next_month = next_date.strftime('%B %Y')
+    #prev_month = prev_date.strftime('%B %Y')
+    #pretty_date = prettify_date(when)
+
+    print(stats)
+
+    plot_code = generate_plot_code_2(stats, floor="")
     
+    floor_plots = []
+    floor_data = stats_for_plot_time_floors(building, int(month))
+    floors = [i for i in range(len(floor_data))]
+    for i in range(len(floor_data)):
+        f = floor_data[i]
+        plot_code_b = generate_plot_code_2(f, floor=str(i))
+        floor_plots.append(plot_code_b)
+
     # Limits
     #limits = get_limits()
 
     buildings = list_buildings()
 
-    return render_template('status2.html', stats=stats, plot_code=plot_code, building=building, month=month,
-            pretty_month=pretty_month, prev_month=str(int(month)-1), next_month=str(int(month)+1), buildings=buildings)
+    return render_template('status2.html', stats=stats, plot_code=plot_code, building=building, month=month, 
+            pretty_month=pretty_month, prev_month=str(int(month)-1), next_month=str(int(month)+1), buildings=buildings,
+            floor_plots=floor_plots, floors = floors)
 
 
 @app.route('/team_info/')
 def team_info():
  
     return render_template('team_info.html')
+
+
