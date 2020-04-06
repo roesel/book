@@ -5,7 +5,28 @@
 {% endblock %}
 
 {% block content %}
-    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+<div class="container">
+<div class="row">
+	<div class="col-md-6">
+                    <div class="alert alert-success" role="alert">
+                        <h2>Welcome to the LabBook demo!</h2>
+						<h4>Please use one of these credentials:</h4>
+						<div class="alert alert-primary" role="alert">
+							<strong>email:</strong> jhin.ornn@epfl.ch
+							<strong>password:</strong> catmouse
+						</div>
+						<div class="alert alert-warning" role="alert">
+							<strong>email:</strong> akali.braum@epfl.ch  
+							<strong>password:</strong> ponydog
+						</div>
+						<div class="alert alert-danger" role="alert">
+							<strong>email:</strong> brand.zac@epfl.ch
+							<strong>password:</strong> birdsnake
+						</div>
+                    </div>
+	</div>
+	<div class="col-md-6">
+    <!--<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">-->
         <h2 class="">Sign in</h2>
         
         <p class="lead">Use your EPFL email, but <strong>DO NOT</strong> input<br/> your real GASPAR password.</p>
@@ -31,4 +52,6 @@
         </form>
 
     </div>
+	</div>
+</div>
 {% endblock %}

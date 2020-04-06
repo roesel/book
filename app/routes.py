@@ -78,6 +78,7 @@ def manage():
         'manage.html', bookings=bookings,
         user_name=current_user.name,prettify_when=prettify_when)
 
+@login_required
 @app.route('/deny-booking/<int:id>/')
 def deny_booking_id(id):
     params = get_booking_text(id)
@@ -88,6 +89,7 @@ def deny_booking_id(id):
         pass
     return redirect('/manage/')
 
+@login_required
 @app.route('/approve-booking/<int:id>/')
 def approve_booking_id(id):
     params = get_booking_text(id)
@@ -98,6 +100,7 @@ def approve_booking_id(id):
         pass    
     return redirect('/manage/')
 
+@login_required
 @app.route('/cancel-booking/<int:id>/')
 def cancel_booking(id):
     params = get_booking_text(id)
@@ -110,22 +113,18 @@ def cancel_booking(id):
     assert num_of_deleted_rows < 2
     return redirect('/dashboard/')
 
+@login_required
 @app.route('/book/', methods=['POST', 'GET'])
 def book():
-    if request.method == 'POST':
-        book_room_id = int(request.form.get('rooms'))
-        print('Got room ids')
-        return redirect('/choose-date/{}/'.format(book_room_id))
-    else:
-        try:
-            rooms = get_accessible_rooms(current_user.id)
-        except:
-            return "Could not retireve rooms"
+    try:
+        rooms = get_accessible_rooms(current_user.id)
+    except:
+        return "Could not retireve rooms"
 
-        for room in rooms:
-            room["full_name"] = room_to_address(room["name"])
+    for room in rooms:
+        room["full_name"] = room_to_address(room["name"])
 
-        return render_template('book.html', rooms=rooms, user_name=current_user.name)
+    return render_template('book.html', rooms=rooms, user_name=current_user.name)
 
 from random import randint
 from calendar import Calendar

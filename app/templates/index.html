@@ -15,7 +15,11 @@
         <div class="card-body">
           <h5 class="card-title">For researchers</h5>
           <p class="card-text">Do your work safely by booking your lab and office, knowing how many people will share the space with you.</p>
-          <a href="/book/" class="btn btn-primary">Book a laboratory</a>
+          {% if not current_user.is_anonymous %}
+			<a href="/book/" class="btn btn-primary">Book a laboratory</a>
+		  {% else %}
+			<a href="/login/" class="btn btn-primary">Book a laboratory</a>
+		  {% endif %}
         </div>
       </div>
 
@@ -24,7 +28,12 @@
         <div class="card-body">
           <h5 class="card-title">For administrators</h5>
           <p class="card-text">Manage which research request has the highest priority by granting access to specific bookings.</p>
-          <a href="/manage/" class="btn btn-primary">View pending requests</a>
+		  {% if not current_user.is_anonymous %}
+			<a href="/manage/" class="btn btn-primary">View pending requests</a>
+		  {% else %}
+			<a href="/login/" class="btn btn-primary">View pending requests</a>
+		  {% endif %}
+          
         </div>
       </div>
 
