@@ -421,8 +421,10 @@ def status2(building, month):
     # Limits
     #limits = get_limits()
 
-    return render_template('status2.html', stats=stats, plot_code=plot_code, building=building, 
-            pretty_month=pretty_month, prev_month=str(int(month)-1), next_month=str(int(month)+1))
+    buildings = list_buildings()
+
+    return render_template('status2.html', stats=stats, plot_code=plot_code, building=building, month=month,
+            pretty_month=pretty_month, prev_month=str(int(month)-1), next_month=str(int(month)+1), buildings=buildings)
 
 
 @app.route('/team_info/')

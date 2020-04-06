@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block script %}
+    <script src="/static/js/main.js"></script>
     {{ plot_code | safe}}
 {% endblock %}
 
@@ -16,7 +17,17 @@
         </div>
 
         <div class="col-md-2 text-right">
-            <h2>{{building}}</h2>
+            <h2>
+                <select id="building_select"  onchange="updateBuildingSelection()">
+                {% for b in buildings %}
+                    {% if building==b %}
+                        <option value="/status/building/{{b}}/{{month}}/" selected>{{b}}</option>
+                    {% else %}
+                        <option value="/status/building/{{b}}/{{month}}/">{{b}}</option>
+                    {% endif %}
+                {% endfor %}
+             </select>
+             </h2>
         </div>
 
         <div class="col-md-3 text-right">
