@@ -330,7 +330,7 @@ def stats_for_plot_time(building, month):
     plot_input['text'] = 'Load of the building during the month'
     plot_input['under_text'] = 'Day'
     plot_input['label'] = 'Rooms booked in this building'
-    for day in range(31):
+    for day in range(30):
         day_string = '2020-{:02d}-{:02d}'.format(month,day+1)
         print(day_string)
         plot_input['labels'].append('{:d}'.format(day+1))
