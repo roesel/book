@@ -409,7 +409,7 @@ def prettify_when(when):
 
 def room_to_address(room_name):
     room = Room.get(Room.name == room_name)
-    address = room.building + ' building, ' + 'floor {:d}, room '.format(room.floor) + room.name[-4:]
+    address = room.building + ' building, floor {:d}, room '.format(room.floor) + room.name[-4:]
     return address
     
 # --------- Debugging functions
