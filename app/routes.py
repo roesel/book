@@ -66,7 +66,7 @@ def dashboard():
 @app.route('/manage/')
 def manage():
    
-    bookings = get_pending_bookings()
+    bookings = get_pending_bookings_new()
     #try:
     #   bookings = get_pending_bookings(current_user.id)
     #except:
@@ -259,6 +259,8 @@ def status(when):
 
     #get_plot_code
 
+    upper_limit = get_limits()["building"]
+
     print(stats)
 
     labels_string = '","'.join(stats["labels"])
@@ -304,7 +306,8 @@ def status(when):
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize: 1
+                        stepSize: 1,
+                        max: '''+str(upper_limit)+'''
                     },
                     scaleLabel: {
                         display: true,
@@ -337,14 +340,7 @@ def status(when):
                             pretty_date=pretty_date, prev_when=prev_when, next_when=next_when,
                             limits=limits)
 
-
-@app.route('/status2/', defaults={'building': 'BM', 'month':'4'})
-@app.route('/status2/<building>/<month>/')
-def status2(building, month):
-    
-    stats = stats_for_plot_time(building, int(month))
-
-    print(stats)
+def generate_plot_code_2(stats, upper_limit, floor=""):
 
     labels_string = '","'.join(stats["labels"])
     
@@ -359,9 +355,15 @@ def status2(building, month):
     text_string = stats["text"]
     x_axis_string = stats["under_text"]
 
+    bar_id = "bar-chart"
+    if floor:
+        bar_id += "-"+floor
+
+    print(bar_id)
+
     plot_code = '''<script>
     // Bar chart
-    new Chart(document.getElementById("bar-chart"), {
+    new Chart(document.getElementById("'''+bar_id+'''"), {
         type: 'bar',
         data: {
         labels: ["'''+labels_string+'''"],
@@ -390,7 +392,8 @@ def status2(building, month):
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize: 1
+                        stepSize: 1,
+                        max: '''+str(upper_limit)+'''
                     },
                     scaleLabel: {
                         display: true,
@@ -407,22 +410,51 @@ def status2(building, month):
         }
     });
     </script>'''
-    
-    # Date loginc for next/previous
-    #current_date = datetime.strptime(when, '%Y-%m-%d')
-    #next_date = current_date + timedelta(days=1)
-    #prev_date = current_date + timedelta(days=-1)
-    #next_when = next_date.strftime('%Y-%m-%d')
-    #prev_when = prev_date.strftime('%Y-%m-%d')
+
+    return plot_code
+
+@app.route('/status/building/', defaults={'building': 'BM', 'month':'4'})
+@app.route('/status/building/<building>/<month>/')
+def status2(building, month):
+    stats = stats_for_plot_time(building, int(month))
+    date_month = datetime(2020, int(month), 1)
+    pretty_month = date_month.strftime('%B %Y')
+
+    ## Date loginc for next/previous
+    #next_date = date_month + timedelta(days=35)
+    #prev_date = date_month + timedelta(days=-35)
+    #next_month = next_date.strftime('%B %Y')
+    #prev_month = prev_date.strftime('%B %Y')
     #pretty_date = prettify_date(when)
+
+    print(stats)
+
+
+    lims = get_limits()
+
+    plot_code = generate_plot_code_2(stats, lims["building"], floor="")
     
+    floor_plots = []
+    floor_data = stats_for_plot_time_floors(building, int(month))
+    floors = [i for i in range(len(floor_data))]
+    for i in range(len(floor_data)):
+        f = floor_data[i]
+        plot_code_b = generate_plot_code_2(f, lims["floor"], floor=str(i))
+        floor_plots.append(plot_code_b)
+
     # Limits
     #limits = get_limits()
 
-    return render_template('status2.html', stats=stats, plot_code=plot_code, building=building)
+    buildings = list_buildings()
+
+    return render_template('status2.html', stats=stats, plot_code=plot_code, building=building, month=month, 
+            pretty_month=pretty_month, prev_month=str(int(month)-1), next_month=str(int(month)+1), buildings=buildings,
+            floor_plots=floor_plots, floors = floors)
 
 
 @app.route('/team_info/')
 def team_info():
  
     return render_template('team_info.html')
+
+

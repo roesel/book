@@ -38,7 +38,6 @@ def deny_booking(booking_id):
     requested_booking.save()
     return True
 
-
 def get_bookings_of_user(user_id):
     query = Booking.select().where(Booking.who == user_id)
     user_bookings = [model_to_dict(c) for c in query]
@@ -70,7 +69,7 @@ def get_pending_bookings_new(sort_by='booking_id'):
     pending_bookings = [model_to_dict(c) for c in query_sorted]
     for b in pending_bookings:
         booking = Booking.get(Booking.id == b['id'])
-        same_room_pending = Booking.select().join(Room).where(Booking.when == booking.when, Room.id == booking.room).count()
+        same_room_pending = Booking.select().join(Room).where(Booking.when == booking.when, Booking.status == 'pending', Room.id == booking.room).count()
         if same_room_pending == 1:
             b['unique_request'] = True
         else:
@@ -163,7 +162,7 @@ def check_bookings_of_user_room_when(user_id, room_id, when, status='approved'):
     assert count in [0, 1]
     return bool(count)
 
-def count_to_int(count, max_count=POP_LIMIT_FLOOR, num_int=3):
+def count_to_int(count, max_count=POP_LIMIT_FLOOR, num_int=2):
             step = float(max_count) / num_int
             for i in range(num_int - 1):
                 if i <= count < i + step:
@@ -251,7 +250,7 @@ def stats_occupation(when):
         for floor in floors_of_the_building:
             floor_occupation[building][floor] = 0
             floor_occupation_rel[building][floor] = 0
-    day_occupation = Booking.select().where(Booking.when == when)
+    day_occupation = Booking.select().where(Booking.when == when, Booking.status == 'approved')
     for booking in day_occupation:
         room_id = booking.room
         room = Room.get(Room.id == room_id)
@@ -297,12 +296,12 @@ def stats_for_plot_buildings(when_day):
     plot_input['labels'] = []
     plot_input['data_AM'] = []
     plot_input['colors_AM'] = []
+    plot_input['label_AM'] = 'Morning'
     plot_input['data_PM'] = []
     plot_input['colors_PM'] = []
-    plot_input['text'] = 'Load of EPFL campus per building'
+    plot_input['label_PM'] = 'Evening'
+    plot_input['text'] = 'Load of EPFL campus by buildings'
     plot_input['under_text'] = 'Building'
-    plot_input['label_AM'] = 'Before lunch, AM'
-    plot_input['label_PM'] = 'After lunch, PM'
     building_occupation_AM, floor_occupation_AM, building_occupation_rel_AM, floor_occupation_rel_AM = stats_occupation(when = when_day + '-AM')
     building_occupation_PM, floor_occupation_PM, building_occupation_rel_PM, floor_occupation_rel_PM = stats_occupation(when = when_day + '-PM')
     for b in building_occupation_AM.keys():
@@ -324,19 +323,18 @@ def stats_for_plot_time(building, month):
     plot_input['labels'] = []
     plot_input['data_AM'] = []
     plot_input['colors_AM'] = []
-    plot_input['label_AM'] = 'Before lunch, AM'
+    plot_input['label_AM'] = 'Morning'
     plot_input['data_PM'] = []
     plot_input['colors_PM'] = []
-    plot_input['label_PM'] = 'After lunch, PM'
+    plot_input['label_PM'] = 'Evening'
     plot_input['text'] = 'Load of the building during the month'
-    plot_input['under_text'] = 'Date'
+    plot_input['under_text'] = 'Day'
     plot_input['label'] = 'Rooms booked in this building'
-    for day in range(31):
+    for day in range(30):
         day_string = '2020-{:02d}-{:02d}'.format(month,day+1)
         print(day_string)
-        plot_input['labels'].append(day_string)
+        plot_input['labels'].append('{:d}'.format(day+1))
         building_occupation_AM, floor_occupation_AM, building_occupation_rel_AM, floor_occupation_rel_AM = stats_occupation(when = day_string + '-AM')
-        print(building_occupation_AM.keys())
         plot_input['data_AM'].append(building_occupation_AM[building])
         if building_occupation_rel_AM[building] < 1:
             plot_input['colors_AM'].append('#3395ff')
@@ -349,6 +347,49 @@ def stats_for_plot_time(building, month):
         else:
             plot_input['colors_PM'].append('#dc3545')
     return plot_input
+
+def stats_for_plot_time_floor(building, floor, month):
+    plot_input = {}
+    plot_input['labels'] = []
+    plot_input['data_AM'] = []
+    plot_input['colors_AM'] = []
+    plot_input['label_AM'] = 'Morning'
+    plot_input['data_PM'] = []
+    plot_input['colors_PM'] = []
+    plot_input['label_PM'] = 'Evening'
+    plot_input['text'] = 'Load of {:01d} floor during the month'.format(floor)
+    plot_input['under_text'] = 'Day'
+    plot_input['label'] = 'Rooms booked on {:01d} floor'.format(floor)
+    for day in range(30):
+        day_string = '2020-{:02d}-{:02d}'.format(month,day+1)
+        plot_input['labels'].append('{:d}'.format(day+1))
+        building_occupation_AM, floor_occupation_AM, building_occupation_rel_AM, floor_occupation_rel_AM = stats_occupation(when = day_string + '-AM')        
+        plot_input['data_AM'].append(floor_occupation_AM[building][floor])
+        if floor_occupation_rel_AM[building][floor] < 1:
+            plot_input['colors_AM'].append('#3395ff')
+        else:
+            plot_input['colors_AM'].append('#dc3545')
+        building_occupation_PM, floor_occupation_PM, building_occupation_rel_PM, floor_occupation_rel_PM = stats_occupation(when = day_string + '-PM')
+        plot_input['data_PM'].append(floor_occupation_PM[building][floor])
+        if floor_occupation_rel_PM[building][floor] < 1:
+            plot_input['colors_PM'].append('#0062cc')
+        else:
+            plot_input['colors_PM'].append('#dc3545')
+    return plot_input
+
+def stats_for_plot_time_floors(building, month):
+    plot_input_pack = []
+    rows = Room.select(Room.floor).where(Room.building == building).group_by(Room.floor)
+    floors_of_the_building = [row.floor for row in rows]
+    for floor in floors_of_the_building:
+        stats_for_plot_time_floor(building = building, floor = floor, month = month)
+        plot_input_pack.append(stats_for_plot_time_floor(building = building, floor = floor, month = month))
+    return plot_input_pack
+
+def list_buildings():
+    rows = Room.select(Room.building).group_by(Room.building)
+    buildings_of_the_campus = [row.building for row in rows]
+    return buildings_of_the_campus
 
 def prettify_date(date):
     """

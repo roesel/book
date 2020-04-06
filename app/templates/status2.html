@@ -1,27 +1,65 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title>LabBook - Status2</title>
+<title>LabBook - Status building</title>
 {% endblock %}
 
 {% block script %}
+<script>
+$(document).ready(function(){
+    function updateBuildingSelection() {
+        var value = document.getElementById("building_select").value;
+        console.log(value);
+        window.location = value;
+    }
+    document.getElementById("building_select").addEventListener("change", updateBuildingSelection);
+});
+</script>
+
     {{ plot_code | safe}}
+
+    {% for f in floor_plots %}
+        {{ f | safe}}
+    {% endfor %}
+
 {% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="row mb-2">
-        <div class="col-md-6">
-            <h2>Status</h2>
+        <div class="col-md-5">
+            <h2>Building status</h2>
         </div>
 
-        <div class="col-md-6 text-right">
-            <h2>{{building}}</h2>
+        <div class="col-md-2 text-right">
+            <h2>
+                <select id="building_select" class="form-control text-center">
+                {% for b in buildings %}
+                    {% if building==b %}
+                        <option value="/status/building/{{b}}/{{month}}/" selected>{{b}}</option>
+                    {% else %}
+                        <option value="/status/building/{{b}}/{{month}}/">{{b}}</option>
+                    {% endif %}
+                {% endfor %}
+             </select>
+             </h2>
         </div>
+
+        <div class="col-md-5 text-right">
+            <h2>{{pretty_month}}</h2>
+            <a href="/status/building/{{building}}/{{prev_month}}/">&#8592; Previous</a> &middot; 
+            <a href="/status/building/{{building}}/{{next_month}}/">Next &#8594;</a>
+        </div>
+        
+        
     </div>
     <div class="row">
         <div class="col-md-12">
             <canvas id="bar-chart" width="600" height="200"></canvas>
+            <h2>Occupancy by floor</h2>
+            {% for i in floors %}
+                <canvas id="bar-chart-{{i}}" width="600" height="137"></canvas>
+            {% endfor %}
         </div>
     </div>
 </div>
