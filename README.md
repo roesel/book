@@ -1,5 +1,5 @@
-# book
-Booking
+# LabBook
+![](other/assets/about.gif)
 
 ## Setup
 cd C:\Repos\book
