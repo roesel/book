@@ -2,7 +2,7 @@
 ![](other/assets/about.gif)
 
 # LabBook
-A web system to book access to your lab while staying safe during the pandemic.
+A web system to book access to your lab while staying safe during the pandemic. It was created in three days during the [LauzHack against COVID-19](https://covid19.lauzhack.com/) online hackaton as a demo application for EPFL.
 
 ## Problem
 Many researchers, among them PhD students, need to access their laboratories. Now that the campus is closed for everyone, none of them can run experiments etc. At some point though, we will need to find a way for the scientific research to safely continue by allowing a limited number of people to work on campus at a time, while taking into account where they need to work and making sure it is safe for them.
